@@ -1,5 +1,5 @@
 {
-  "name": "firefly",
+  "name": "antruly-blog",
   "type": "module",
   "version": "6.16.8",
   "engines": {
@@ -21,7 +21,13 @@
     "lint": "biome check --write ./src ./scripts",
     "preinstall": "npx only-allow pnpm",
     "lqips": "npx tsx scripts/generate-lqips.ts",
-    "github-cards": "npx tsx scripts/generate-github-card-data.ts"
+    "github-cards": "npx tsx scripts/generate-github-card-data.ts",
+    "covers": "npx tsx scripts/generate-post-covers.ts",
+    "music:fetch": "npx tsx scripts/fetch-cc-music.ts",
+    "music:search": "npx tsx scripts/fetch-cc-music.ts --search",
+    "deploy": "pnpm build && wrangler deploy",
+    "deploy:dry": "wrangler deploy --dry-run",
+    "cf:whoami": "wrangler whoami"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

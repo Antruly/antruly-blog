@@ -4,7 +4,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	// 壁纸模式："banner" 横幅壁纸，"fullscreen" 全屏壁纸，"overlay" 覆盖透明，"none" 纯色背景无壁纸
 	mode: "banner",
 	// 是否启用背景视频播放，配置后将在导航栏显示视频播放按钮
-	playerEnable: true,
+	// 暂不启用（不想让首屏背一个视频文件的流量）。要开的话在下面 src.playerUrl 填自己的 mp4
+	playerEnable: false,
 	/**
 	 * 背景图片配置
 	 * 图片路径支持三种格式：
@@ -59,8 +60,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
 		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下
-		// playerUrl: "/assets/videos/firefly.mp4",
-		playerUrl: "https://bed.twoleaf.cn/file/1785658612716_firefly.mp4",
+		// playerUrl: "/assets/videos/background.mp4",
 	},
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
@@ -73,17 +73,16 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否启用主页横幅文字
 			enable: true,
 			// 主页横幅主标题
-			title: "Lovely firefly!",
+			// TODO(user): 想换成别的欢迎语改这里
+			title: "Antruly",
 			// 主页横幅主标题字体大小
 			titleSize: "4.5rem",
-			// 主页横幅副标题
+			// 主页横幅副标题（打字机循环显示）
 			subtitle: [
-				"In Reddened Chrysalis, I Once Rest",
-				"From Shattered Sky, I Free Fall",
-				"Amidst Silenced Stars, I Deep Sleep",
-				"Upon Lighted Fyrefly, I Soon Gaze",
-				"From Undreamt Night, I Thence Shine",
-				"In Finalized Morrow, I Full Bloom",
+				"把代码写成能维护的样子",
+				"写点 C++、libuv 和网络编程",
+				"记录踩过的坑，也记录绕过的路",
+				"开源项目与笔记都在这里",
 			],
 			// 主页横幅副标题字体大小
 			subtitleSize: "1.5rem",
@@ -107,18 +106,13 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				{
 					name: "GitHub",
 					icon: "fa7-brands:github",
-					url: "https://github.com/CuteLeaf/Firefly",
+					url: "https://github.com/Antruly",
 					showName: true,
 				},
 				{
 					name: "Email",
 					icon: "fa7-solid:envelope",
-					url: "mailto:xiaye@msn.com",
-				},
-				{
-					name: "Sponsor",
-					icon: "material-symbols:favorite",
-					url: "https://blog.cuteleaf.cn/sponsor/",
+					url: "mailto:zhu.weiye@foxmail.com",
 				},
 				{
 					name: "RSS",
@@ -130,7 +124,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 壁纸轮播配置，横幅壁纸和全屏壁纸共享，仅在配置多张图片时生效
 		carousel: {
 			// 是否启用壁纸轮播；关闭时保持每次刷新随机显示一张
-			enable: false,
+			// 已开启：配合下面 src.desktop / src.mobile 的数组，首屏大图会自动轮播
+			enable: true,
 			// 轮播切换间隔（毫秒）
 			interval: 5000,
 			// 过渡效果: 'fade' 渐变 | 'zoom' 缩放 | 'slide' 滑动 | 'kenburns' 旋转木马

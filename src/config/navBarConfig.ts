@@ -16,6 +16,9 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 主页
 	links.push(LinkPresets.Home);
 
+	// 项目 —— 放在第二位：这是本站的核心名片，不做成二级菜单
+	links.push(LinkPresets.Projects);
+
 	// 文章及其子菜单
 	links.push({
 		name: "文章",
@@ -36,12 +39,18 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
-	//社交及其子菜单
+	// 分享 —— 短内容（主题的「动态」页），不占文章位
+	links.push(LinkPresets.Dynamic);
+
+	// 我的及其子菜单
 	links.push({
-		name: "社交",
+		name: "我的",
 		url: "#",
-		icon: "material-symbols:group",
+		icon: "material-symbols:person",
 		children: [
+			// 相册
+			LinkPresets.Gallery,
+
 			// 友链
 			LinkPresets.Friends,
 
@@ -50,87 +59,17 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
-	// 我的及其子菜单
+	// 关于我
+	links.push(LinkPresets.About);
+
+	// 开往（Travellings）—— 官方要求：申请前必须先在站内可见位置挂上此链接
+	// 图标用「地铁/火车」，官方明确纸飞机已不再推荐
 	links.push({
-		name: "我的",
-		url: "#",
-		icon: "material-symbols:person",
-		children: [
-			// 动态
-			LinkPresets.Dynamic,
-
-			// 项目
-			LinkPresets.Projects,
-
-			// 相册
-			LinkPresets.Gallery,
-
-			// 书签导航
-			LinkPresets.Booknav,
-
-			// 哔哩哔哩追番
-			LinkPresets.Bilibili,
-
-			// 番组计划
-			LinkPresets.Bangumi,
-
-			// VNDB
-			LinkPresets.VNDB,
-
-			// MyAnimeList
-			LinkPresets.MAL,
-		],
+		name: "开往",
+		url: "https://www.travellings.cn/go.html",
+		icon: "material-symbols:subway",
+		external: true,
 	});
-
-	// 关于及其子菜单
-	links.push({
-		name: "关于",
-		url: "#",
-		icon: "material-symbols:info",
-		children: [
-			// 打赏
-			LinkPresets.Sponsor,
-
-			// 关于页面
-			LinkPresets.About,
-		],
-	});
-
-	// 自定义导航栏链接
-	links.push({
-		name: "链接",
-		url: "#",
-		icon: "material-symbols:link",
-		// 子菜单
-		children: [
-			{
-				name: "GitHub",
-				url: "https://github.com/CuteLeaf/Firefly",
-				external: true,
-				icon: "fa7-brands:github",
-			},
-			{
-				name: "Gitee",
-				url: "https://gitee.com/CuteLeaf/Firefly",
-				external: true,
-				icon: "fa7-brands:gitee",
-			},
-			{
-				name: "Firefly文档",
-				url: "https://docs-firefly.cuteleaf.cn",
-				external: true,
-				icon: "material-symbols:docs",
-			},
-		],
-	});
-
-	// 文档链接
-	// links.push({
-	// 	name: "文档",
-	// 	url: "https://docs-firefly.cuteleaf.cn",
-	// 	external: true,
-	// 	icon: "material-symbols:docs",
-	// });
 
 	return { links } as NavBarConfig;
 };
@@ -183,7 +122,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		pageKey: "guestbook",
 	},
 	Dynamic: {
-		name: "动态",
+		name: "分享",
 		url: "/dynamic/",
 		icon: "material-symbols:forum-rounded",
 		pageKey: "dynamic",

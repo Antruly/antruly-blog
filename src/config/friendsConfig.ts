@@ -1,6 +1,6 @@
 import type { FriendLink, FriendsPageConfig } from "../types/friendsConfig";
 
-// 可以在src/content/spec/friends.md中编写友链页面下方的自定义内容
+// 可以在src/content/spec/friends.mdx中编写友链页面下方的自定义内容
 
 // 友链页面配置
 export const friendsPageConfig: FriendsPageConfig = {
@@ -21,33 +21,33 @@ export const friendsPageConfig: FriendsPageConfig = {
 };
 
 // 友链配置
+// 添加格式（复制一份改字段即可）：
+// {
+//   title: "站名",
+//   imgurl: "对方头像/logo 的图片直链",
+//   desc: "一句话简介",
+//   siteurl: "https://对方的域名",
+//   tags: ["Blog"],
+//   weight: 5,        // 越大越靠前
+//   enabled: true,
+// },
 export const friendsConfig: FriendLink[] = [
 	{
-		title: "夏夜流萤",
-		imgurl:
-			"https://weavatar.com/avatar/d252655d40d6874417a720bad0a6c5f77f8f6a1fd2f882f8f338402dc37e4190?s=640",
-		desc: "飞萤之火自无梦的长夜亮起，绽放在终竟的明天。",
-		siteurl: "https://blog.cuteleaf.cn",
-		tags: ["Blog"],
-		weight: 10, // 权重，数字越大排序越靠前
-		enabled: true, // 是否启用
-	},
-	{
-		title: "Firefly Docs",
-		imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
-		desc: "Firefly主题模板文档",
-		siteurl: "https://docs-firefly.cuteleaf.cn",
-		tags: ["Docs"],
-		weight: 9,
+		title: "开往",
+		imgurl: "https://www.travellings.cn/assets/logo.gif",
+		desc: " 开往-友链接力：点击一次，随机跳转到一位站长的网站。",
+		siteurl: "https://www.travellings.cn/go.html",
+		tags: ["友链", "项目"],
+		weight: 10,
 		enabled: true,
 	},
 	{
-		title: "Astro",
-		imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
-		desc: "The web framework for content-driven websites. ⭐️ Star to support our work!",
-		siteurl: "https://github.com/withastro/astro",
-		tags: ["Framework"],
-		weight: 8,
+		title: "Firefly",
+		imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
+		desc: "本站使用的 Astro 博客主题与其文档。",
+		siteurl: "https://docs-firefly.cuteleaf.cn",
+		tags: ["Docs"],
+		weight: 9,
 		enabled: true,
 	},
 ];
