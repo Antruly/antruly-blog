@@ -4,6 +4,13 @@ dist/
 # generated vndb covers
 public/vndb-covers/
 
+# CC 音乐下载缓存（scripts/fetch-cc-music.ts 用）
+.cc-music/
+
+# 音乐音频：37MB 二进制，不进仓库，用 pnpm music:fetch 重新拉
+# （scripts/cc-music-sources.json 记着曲目来源，换机器后跑一次即可重建）
+public/assets/music/
+
 # generated types
 .astro/
 

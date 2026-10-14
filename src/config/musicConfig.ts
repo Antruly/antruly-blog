@@ -1,3 +1,4 @@
+import { ccMusicPlaylist } from "../constants/ccMusic";
 import type { MusicPlayerConfig } from "../types/musicConfig";
 
 // 音乐播放器配置
@@ -41,19 +42,17 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	},
 
 	// 本地音乐配置（当 mode 为 'local' 时使用）
-	// 1. 支持传入歌词文件的路径
-	// lrc: "/assets/music/lrc/使一颗心免于哀伤-哼唱.lrc",
-	// 2. 或者直接填入歌词字符串内容
-	// lrc: "[00:00.00]歌词内容...",
+	// 歌单在 src/constants/ccMusic.ts —— 那是 scripts/fetch-cc-music.ts 生成的，
+	// 不要在这里手写曲目。要增删曲子：
+	//   1) 编辑 scripts/cc-music-sources.json
+	//   2) pnpm music:fetch        （下载到 public/assets/music/）
+	//   或 pnpm music:fetch --target=r2（传到 Cloudflare R2，歌单自动换成绝对地址）
+	// 曲目授权是 CC0 / 公有领域 / CC BY / CC BY-SA，署名信息在同一条目里，
+	// 由 /music-credits 页面展示（CC BY 强制要求署名，别把那页删了）。
+	//
+	// 歌词：ccMusicPlaylist 里全是纯音乐，lrc 留空。将来要加带歌词的曲子，
+	// 既可以在那边的生成结果上手写 lrc，也可以填 lrc 文件路径。
 	local: {
-		playlist: [
-			{
-				name: "使一颗心免于哀伤",
-				artist: "知更鸟 / HOYO-MiX / Chevy",
-				url: "/assets/music/使一颗心免于哀伤-哼唱.mp3",
-				cover: "/assets/music/cover/109951169585655912.webp",
-				lrc: "",
-			},
-		],
+		playlist: ccMusicPlaylist,
 	},
 };

@@ -1,0 +1,88 @@
+---
+/**
+ * 音乐署名页。
+ *
+ * CC BY / CC BY-SA 都要求「署名 + 标明授权 + 给出授权原文链接」，
+ * 光在播放器里放首歌是不够的。这一页就是履行这个义务的地方。
+ *
+ * 内容全部读 src/constants/ccMusic.ts —— 改歌单不用动这里。
+ */
+import { Icon } from "astro-icon/components";
+import { ccMusicTracks } from "@/constants/ccMusic";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/pages/common.css";
+
+const trackCount = ccMusicTracks.length;
+/** 同一张专辑的曲子共用封面，按来源去重后列一次就够 */
+const sourceCount = new Set(ccMusicTracks.map((t) => t.sourceUrl)).size;
+---
+
+<MainGridLayout
+	title="音乐版权"
+	description="本站背景音乐的来源、作者与授权协议"
+>
+	<div class="card-base px-6 py-6">
+		<div class="page-heading">
+			<div class="page-icon" aria-hidden="true">
+				<Icon name="material-symbols:music-note" />
+			</div>
+			<div>
+				<h2>音乐版权</h2>
+			</div>
+		</div>
+
+		<div class="mt-4 space-y-3 text-90 text-sm leading-relaxed">
+			<p>
+				本站的背景音乐一共 {trackCount} 首，全部来自
+				<a
+					href="https://archive.org/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-(--primary) hover:underline">Internet Archive</a
+				>（{sourceCount} 个条目），授权协议为 CC0 / 公有领域 / CC BY / CC BY-SA ——
+				都可以商用和再分发。
+			</p>
+			<p>
+				音频文件原样下载自 Internet Archive，没有做转码或剪辑，只是重命名后放在本站自托管。
+				下面逐首列出作者与授权，按 CC 的要求署名。
+			</p>
+		</div>
+
+		<ul class="mt-6 space-y-3">
+			{
+				ccMusicTracks.map((track) => (
+					<li class="rounded-(--radius-large) bg-(--btn-plain-bg) px-4 py-3">
+						<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+							<span class="font-medium text-95">{track.name}</span>
+							<span class="text-75 text-sm">{track.artist}</span>
+						</div>
+						<div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-60 text-xs">
+							<a
+								href={track.licenseUrl}
+								target="_blank"
+								rel="noopener noreferrer license"
+								class="hover:text-(--primary) hover:underline"
+							>
+								{track.license}
+							</a>
+							<a
+								href={track.sourceUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="hover:text-(--primary) hover:underline"
+							>
+								来源 archive.org
+							</a>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="mt-6 text-60 text-xs leading-relaxed">
+			权利人对授权有异议的话，欢迎
+			<a href="/about/" class="text-(--primary) hover:underline">联系我</a
+			>，我会立即下架。
+		</p>
+	</div>
+</MainGridLayout>
