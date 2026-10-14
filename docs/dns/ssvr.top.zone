@@ -1,0 +1,67 @@
+; ============================================================================
+; ssvr.top —— Cloudflare 导入用 zone 文件
+; 来源：阿里云控制台导出 ssvr.top_1791937487392.xlsx（2026-10-14）
+; 用法：Cloudflare 面板 → 选中 ssvr.top → DNS → Records → Import and Export
+;       → Import DNS records → 上传本文件
+;
+; 导入的记录默认是「DNS only（灰云）」，这正是我们要的：
+; 下面这些记录大多是 frp / 内网穿透 / 游戏服，走橙云代理会直接坏掉
+; （Cloudflare 只代理 HTTP/HTTPS 标准端口）。
+;
+; ── 刻意没有包含的记录，以及原因 ──────────────────────────────────────────
+;
+;   @            CNAME  www.ssvr.top     → 根域归博客，见下
+;   www          CNAME  hbbr.ssvr.top    → www 也归博客
+;
+;   上面两条不要恢复。Cloudflare 的 Worker 自定义域名要求该主机名上
+;   不能已存在 A/AAAA/CNAME 记录，否则报错 100117。
+;
+;   home         A      59.62.65.193     → Cloudflare 里已经存在同名记录（且是橙云，
+;                                          当前 530）。导入会变成两条并存，请手动改
+;                                          那条已有记录：改成 59.62.65.193 + 灰云。
+;
+;   以下 5 条在阿里云里是「暂停」状态，导入会等于把它们重新启用，
+;   所以略过。确认要启用的话手动加：
+;     _dnsauth.tyy     TXT  2022081400000015g5q08zt1wrwglckmubab7kglfhab6wexrqgaui1ztkxlplck
+;     _dnsauth.tyy     TXT  202208140000005qiovne9y953asq1ysqtb1qqfup4iasgxojwxcrk2f3q4027kv
+;     tyyn             A    106.227.90.10
+;     _dnsauth.download TXT 202604090000003yb613lmae4un6c1pqvq0vjf8zgl5lj3o3odpa8aql378tiksl
+;     _dnsauth.download TXT 20260706000000391i3wlrjxt7j5tocvqed5b9ct3qasj57ecxu1uox5kevoepah
+;
+;   另外：_dnsauth.* 这一组是阿里云签发 SSL 证书用的验证记录。域名已经托管到
+;   Cloudflare，证书由 Cloudflare 自动签发，这组 TXT 大概率已经没用了。
+;   留着无害，想清理可以整组删掉。
+; ============================================================================
+
+$ORIGIN ssvr.top.
+$TTL 600
+
+; ── 跳转别名链 ────────────────────────────────────────────────────────────
+tyy         600  IN  CNAME  hbbs.ssvr.top.
+hbbs        600  IN  CNAME  vklaly.ssvr.top.
+hbbr        600  IN  CNAME  mxzvk.ticp.net.
+download    600  IN  CNAME  mxzvk.ticp.net.
+deepseek    600  IN  CNAME  download.ssvr.top.
+frps        600  IN  CNAME  mxzvk.ticp.net.
+cer         600  IN  CNAME  mxzvk.ticp.net.
+stock       600  IN  CNAME  mxzvk.ticp.net.
+automaster  600  IN  CNAME  mxzvk.ticp.net.
+game        600  IN  CNAME  mxzvk.ticp.net.
+meeting     600  IN  CNAME  mxzvk.ticp.net.
+
+; ── 动态 DNS / 直连主机 ───────────────────────────────────────────────────
+vkl         600  IN  CNAME  h276e31951.zicp.vip.
+vklaly      600  IN  A      120.76.24.207
+jk          600  IN  A      218.64.60.33
+lml         600  IN  A      111.3.110.220
+
+; ── IPv6 ─────────────────────────────────────────────────────────────────
+download1   600  IN  AAAA   240e:370:d43:cbd0::7
+
+; ── SSL 证书验证 TXT（仅「启用」中的；暂停的没导入） ───────────────────────
+_dnsauth           600  IN  TXT  "202307140000004fjpezmp3mp68w4v2egdscqvmdec4btnh1i4fu88r4gashlkfo"
+_dnsauth.cer       600  IN  TXT  "202507290000003kkd1ieitnae7fvcttmiptuka7v07i46vqgbs3csl16vg2o7xz"
+_dnsauth.stock     600  IN  TXT  "2026040900000053qvoruc0zwi1ke5e7tdi5d4yj52ttuasmcsiz5q8hebchibcb"
+_dnsauth.stock     600  IN  TXT  "202607080000003ein6dq8yvguqbnykpmc80flbs5x1dru7q57jdiwib15x8fqqr"
+_dnsauth.lml       600  IN  TXT  "202607040000000jh5huzmof0j9pyb155jyahe143m3pqkpqkrqlbmeezzsuls59"
+_dnsauth.download  600  IN  TXT  "202610060000001q00ewh2n8jaluvyh4povwfgxrn7gir40ml9y92xw54o7jinbx"
