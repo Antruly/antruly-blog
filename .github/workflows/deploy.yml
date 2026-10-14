@@ -1,60 +1,50 @@
-name: Deploy to GitHub Pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
-    branches: [ master ]
+    # 注意：如果之后把仓库默认分支改成 main，这里也要同步改
+    branches: [master]
   workflow_dispatch:
 
-# Pages 部署需要的权限
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# 确保只有一个部署任务同时运行
 concurrency:
-  group: "pages"
+  group: "deploy"
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          
+          node-version: '24'
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 11.22.0
           run_install: false
-          
+
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
-      
+        run: pnpm install --frozen-lockfile
+
+      # 必须跑完整流水线：LQIP 占位图、字体子集、Pagefind 索引都挂在这条链上，
+      # 只跑 astro build 会缺东西。
       - name: Build site
         run: pnpm run build
 
-      - name: Create .nojekyll file
-        run: touch dist/.nojekyll
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # 需要在仓库 Settings → Secrets and variables → Actions 里配置：
+      #   CLOUDFLARE_API_TOKEN   —— 权限至少要有 Workers Scripts:Edit
+      #   CLOUDFLARE_ACCOUNT_ID  —— Cloudflare 面板右侧的 Account ID
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
-          path: dist  # Astro默认构建输出目录
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
