@@ -1,0 +1,482 @@
+---
+/**
+ * 通用横向轮播容器。
+ *
+ * 只负责「外壳 + 交互」，不关心里面放什么 —— 通过 <slot /> 塞卡片进去，
+ * 每张卡片自动成为等宽的吸附项。
+ *
+ * 交互由自定义元素 <ui-carousel> 接管（见文件底部脚本）：
+ *   箭头翻页 / 圆点定位 / 键盘左右 / 触摸横滑 / 可选自动播放。
+ *
+ * 为什么用自定义元素而不是 Svelte 岛：
+ * 主题里的 gallery-filter、project-filter、archive-panel 等 9 个交互组件全是这个套路，
+ * 而且自定义元素的定义是全局的 —— Swup 替换 #swup-container 后，新插入的
+ * <ui-carousel> 会被浏览器自动 upgrade，不需要依赖 Swup 的 head/script 插件重放脚本。
+ */
+import { Icon } from "astro-icon/components";
+import "@/styles/pages/common.css";
+
+interface Props {
+	/** 区块标题 */
+	title: string;
+	/** 标题图标（Iconify 名） */
+	icon: string;
+	/** 右上角「查看全部」链接，留空则不显示 */
+	href?: string;
+	/** 自动播放间隔（毫秒），0 = 不自动播放 */
+	interval?: number;
+	/** 无内容时不渲染整个区块 */
+	empty?: boolean;
+}
+
+const { title, icon, href, interval = 0, empty = false } = Astro.props;
+---
+
+{
+	!empty && (
+		<ui-carousel
+			class="carousel-section card-base onload-animation"
+			data-interval={String(interval)}
+		>
+			<header class="carousel-head">
+				<div class="page-heading">
+					<div class="page-icon" aria-hidden="true">
+						<Icon name={icon} />
+					</div>
+					<div>
+						<h2>{title}</h2>
+					</div>
+				</div>
+
+				<div class="carousel-tools">
+					{href && (
+						<a href={href} class="carousel-more">
+							查看全部
+							<Icon name="material-symbols:chevron-right-rounded" />
+						</a>
+					)}
+					<button
+						type="button"
+						class="carousel-arrow"
+						data-prev
+						aria-label="上一组"
+					>
+						<Icon name="material-symbols:chevron-left-rounded" />
+					</button>
+					<button
+						type="button"
+						class="carousel-arrow"
+						data-next
+						aria-label="下一组"
+					>
+						<Icon name="material-symbols:chevron-right-rounded" />
+					</button>
+				</div>
+			</header>
+
+			<div
+				class="carousel-track"
+				data-track
+				tabindex="0"
+				role="group"
+				aria-label={title}
+			>
+				<slot />
+			</div>
+
+			<div class="carousel-dots" data-dots></div>
+		</ui-carousel>
+	)
+}
+
+<style is:global>
+	.carousel-section {
+		padding: 1rem 1rem 0.75rem;
+		margin-bottom: 1rem;
+	}
+
+	.carousel-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.75rem;
+	}
+
+	.carousel-tools {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.carousel-more {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.125rem;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.5rem;
+		font-size: 0.8125rem;
+		font-weight: 500;
+		color: var(--primary);
+		background: color-mix(in oklab, var(--primary) 10%, transparent);
+		transition: background 0.2s ease;
+	}
+	.carousel-more:hover {
+		background: color-mix(in oklab, var(--primary) 20%, transparent);
+	}
+
+	.carousel-arrow {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 0.5rem;
+		color: var(--btn-content);
+		background: var(--btn-plain-bg);
+		cursor: pointer;
+		transition: background 0.2s ease, opacity 0.2s ease;
+	}
+	.carousel-arrow:hover:not(:disabled) {
+		background: var(--btn-plain-bg-hover);
+	}
+	.carousel-arrow:disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+	.carousel-arrow svg {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+
+	/* 轨道：横向滚动 + 吸附 */
+	.carousel-track {
+		display: flex;
+		gap: 1rem;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+		/* 给卡片阴影留点空间，避免被 overflow 裁掉 */
+		padding: 0.25rem 0.25rem 0.5rem;
+		margin: -0.25rem -0.25rem -0.5rem;
+		/* 每一项的宽度：移动端接近满宽，桌面约 20rem */
+		--carousel-item-width: min(78%, 18rem);
+	}
+	.carousel-track::-webkit-scrollbar {
+		display: none;
+	}
+	.carousel-track:focus-visible {
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
+		border-radius: 0.75rem;
+	}
+
+	@media (min-width: 768px) {
+		.carousel-track {
+			--carousel-item-width: 20rem;
+		}
+	}
+
+	/* 槽内每个直接子元素都变成等宽吸附项 */
+	.carousel-track > * {
+		flex: 0 0 auto;
+		width: var(--carousel-item-width);
+		scroll-snap-align: start;
+	}
+
+	.carousel-dots {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.375rem;
+		margin-top: 0.5rem;
+		min-height: 0.75rem;
+	}
+	.carousel-dots[hidden] {
+		display: none;
+	}
+	.carousel-dot {
+		width: 0.375rem;
+		height: 0.375rem;
+		padding: 0;
+		border-radius: 9999px;
+		background: var(--line-divider);
+		cursor: pointer;
+		transition: width 0.25s ease, background 0.25s ease;
+	}
+	.carousel-dot[data-active] {
+		width: 1.125rem;
+		background: var(--primary);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.carousel-track {
+			scroll-behavior: auto;
+		}
+	}
+</style>
+
+<script>
+	// 自定义元素：只定义一次，Swup 切页时不会重复注册
+	if (!customElements.get("ui-carousel")) {
+		class UiCarousel extends HTMLElement {
+			// Swup 切页会把同一个元素重新挂载，靠这个标记保证监听器只绑一次
+			private _ready = false;
+
+			private track: HTMLElement | null = null;
+			private dotsBox: HTMLElement | null = null;
+			private prevBtn: HTMLButtonElement | null = null;
+			private nextBtn: HTMLButtonElement | null = null;
+
+			private interval = 0;
+			private timer: ReturnType<typeof setInterval> | null = null;
+			/** 用户主动暂停（悬停 / 聚焦），和「滚出视口」是两码事，不能共用一个标志位 */
+			private userPaused = false;
+			private visible = true;
+			private pages = 1;
+
+			private ro: ResizeObserver | null = null;
+			private io: IntersectionObserver | null = null;
+
+			private onScroll: () => void = () => {};
+			private onPrev: () => void = () => {};
+			private onNext: () => void = () => {};
+			private onKey: (e: KeyboardEvent) => void = () => {};
+			private onEnter: () => void = () => {};
+			private onLeave: () => void = () => {};
+			private onVisibility: () => void = () => {};
+
+			connectedCallback() {
+				// 同一个元素被重复挂载时（有些过渡会把节点搬走再搬回来）不要重复绑定
+				if (this._ready) return;
+
+				this.track = this.querySelector<HTMLElement>("[data-track]");
+				// 先确认骨架在，再认领 —— 万一元素是先挂载后填内容的，
+				// _ready 保持 false，后面重新挂载还有机会初始化
+				if (!this.track) return;
+				this._ready = true;
+
+				this.dotsBox = this.querySelector<HTMLElement>("[data-dots]");
+				this.prevBtn = this.querySelector<HTMLButtonElement>("[data-prev]");
+				this.nextBtn = this.querySelector<HTMLButtonElement>("[data-next]");
+				this.interval = Number(this.dataset.interval || 0);
+
+				this.onScroll = () => this.update();
+				this.onPrev = () => this.step(-1);
+				this.onNext = () => this.step(1);
+				this.onKey = (e: KeyboardEvent) => this.handleKey(e);
+				this.onEnter = () => this.setUserPaused(true);
+				this.onLeave = () => this.setUserPaused(false);
+				this.onVisibility = () => this.syncPlayback();
+
+				this.track.addEventListener("scroll", this.onScroll, {
+					passive: true,
+				});
+				this.prevBtn?.addEventListener("click", this.onPrev);
+				this.nextBtn?.addEventListener("click", this.onNext);
+				this.track.addEventListener("keydown", this.onKey);
+				this.addEventListener("pointerenter", this.onEnter);
+				this.addEventListener("pointerleave", this.onLeave);
+				this.addEventListener("focusin", this.onEnter);
+				this.addEventListener("focusout", this.onLeave);
+				document.addEventListener("visibilitychange", this.onVisibility);
+
+				// 宽度变化（窗口缩放 / 卡片内图片加载完成）都要重算圆点
+				this.ro = new ResizeObserver(() => this.rebuildDots());
+				this.ro.observe(this.track);
+				for (const img of this.track.querySelectorAll("img")) {
+					if (!img.complete) {
+						img.addEventListener("load", () => this.rebuildDots(), {
+							once: true,
+						});
+					}
+				}
+
+				// 滚出视口就停掉自动播放，别在看不见的地方空转
+				this.io = new IntersectionObserver(
+					(entries: IntersectionObserverEntry[]) => {
+						this.visible = entries[0]?.isIntersecting ?? true;
+						this.syncPlayback();
+					},
+					{ threshold: 0.1 },
+				);
+				this.io.observe(this);
+
+				this.rebuildDots();
+			}
+
+			/**
+			 * 把 connectedCallback 里绑的全撤掉。
+			 * Swup 切页时元素被丢弃，不撤的话 document 上的 visibilitychange 监听
+			 * 和自动播放定时器会一直活着 —— 切换 N 次就有 N 个定时器在抢着滚。
+			 */
+			disconnectedCallback() {
+				this._ready = false;
+				this.stopTimer();
+
+				this.ro?.disconnect();
+				this.io?.disconnect();
+				this.ro = null;
+				this.io = null;
+
+				document.removeEventListener("visibilitychange", this.onVisibility);
+				this.track?.removeEventListener("scroll", this.onScroll);
+				this.track?.removeEventListener("keydown", this.onKey);
+				this.prevBtn?.removeEventListener("click", this.onPrev);
+				this.nextBtn?.removeEventListener("click", this.onNext);
+				this.removeEventListener("pointerenter", this.onEnter);
+				this.removeEventListener("pointerleave", this.onLeave);
+				this.removeEventListener("focusin", this.onEnter);
+				this.removeEventListener("focusout", this.onLeave);
+			}
+
+			/** 一「页」的宽度 = 轨道可视宽度 */
+			pageWidth() {
+				return this.track?.clientWidth || 1;
+			}
+
+			/** 一步的位移 = 一张卡片 + 间距 */
+			stepSize() {
+				const track = this.track;
+				const first = track?.firstElementChild;
+				if (!track || !first) return this.pageWidth();
+				const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+				return first.getBoundingClientRect().width + gap;
+			}
+
+			step(dir: number) {
+				this.track?.scrollBy({
+					left: dir * this.stepSize(),
+					behavior: "smooth",
+				});
+			}
+
+			handleKey(e: KeyboardEvent) {
+				if (e.key === "ArrowRight") {
+					e.preventDefault();
+					this.step(1);
+				} else if (e.key === "ArrowLeft") {
+					e.preventDefault();
+					this.step(-1);
+				}
+			}
+
+			rebuildDots() {
+				// 绑到局部变量：下面圆点的点击回调里 TS 不会保留 this.track 的非空收窄
+				const track = this.track;
+				const dotsBox = this.dotsBox;
+				if (!track || !dotsBox) return;
+
+				const pages = Math.max(
+					1,
+					Math.round(track.scrollWidth / this.pageWidth()),
+				);
+				this.pages = pages;
+
+				if (pages <= 1) {
+					// 一屏就装得下，没什么可翻的 —— 圆点整块藏起来
+					dotsBox.replaceChildren();
+					dotsBox.hidden = true;
+				} else {
+					dotsBox.hidden = false;
+					const dots: HTMLButtonElement[] = [];
+					for (let i = 0; i < pages; i++) {
+						const dot = document.createElement("button");
+						dot.type = "button";
+						dot.className = "carousel-dot";
+						dot.setAttribute("aria-label", `第 ${i + 1} 组`);
+						dot.addEventListener("click", () => {
+							track.scrollTo({
+								left: i * this.pageWidth(),
+								behavior: "smooth",
+							});
+						});
+						dots.push(dot);
+					}
+					dotsBox.replaceChildren(...dots);
+				}
+
+				this.update();
+				// 页数变了要重新判定该不该自动播放（只有一页 / 没有间隔时不该播）
+				this.syncPlayback();
+			}
+
+			update() {
+				if (!this.track) return;
+				const max = this.track.scrollWidth - this.track.clientWidth;
+				const x = this.track.scrollLeft;
+
+				if (this.prevBtn) this.prevBtn.disabled = x <= 1;
+				if (this.nextBtn) this.nextBtn.disabled = x >= max - 1;
+
+				if (this.dotsBox && this.pages > 1) {
+					const active = Math.min(
+						this.pages - 1,
+						Math.round(x / this.pageWidth()),
+					);
+					const dots = this.dotsBox.children;
+					for (let i = 0; i < dots.length; i++) {
+						if (i === active) dots[i].setAttribute("data-active", "");
+						else dots[i].removeAttribute("data-active");
+					}
+				}
+				// 这里刻意不调 play()：update 挂在 scroll 上，滚动时每帧都重置定时器
+				// 会让自动播放永远数不满一个周期
+			}
+
+			/** 悬停 / 聚焦时用户主动暂停 */
+			setUserPaused(paused: boolean) {
+				this.userPaused = paused;
+				this.syncPlayback();
+			}
+
+			/**
+			 * 自动播放的总开关。三个暂停来源任一成立就停：
+			 * 用户悬停、滚出视口、标签页切到后台。
+			 */
+			syncPlayback() {
+				if (this.userPaused || !this.visible || document.hidden) {
+					this.stopTimer();
+					return;
+				}
+				this.play();
+			}
+
+			stopTimer() {
+				if (this.timer) {
+					clearInterval(this.timer);
+					this.timer = null;
+				}
+			}
+
+			play() {
+				this.stopTimer();
+				if (!this.interval || this.interval <= 0) return;
+				if (this.userPaused || !this.visible) return;
+				if (document.hidden) return;
+				if (this.pages <= 1) return;
+				// 用户要求减少动效时不自动轮播
+				if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+					return;
+
+				this.timer = setInterval(() => {
+					if (!this.track) return;
+					const max =
+						this.track.scrollWidth - this.track.clientWidth;
+					// 到底了就回到开头
+					const atEnd = this.track.scrollLeft >= max - 1;
+					this.track.scrollTo({
+						left: atEnd ? 0 : this.track.scrollLeft + this.pageWidth(),
+						behavior: "smooth",
+					});
+				}, this.interval);
+			}
+		}
+
+		customElements.define("ui-carousel", UiCarousel);
+	}
+</script>

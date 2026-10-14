@@ -1,6 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Pagination from "@/components/common/Pagination.astro";
+import PostCarousel from "@/components/features/PostCarousel.astro";
+import ProjectCarousel from "@/components/features/ProjectCarousel.astro";
 import PostPage from "@/components/layout/PostPage.astro";
 import { siteConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
@@ -28,6 +30,16 @@ const heading =
 ---
 
 <MainGridLayout heading={heading}>
+  {
+    /* 轮播只在第一页出现 —— 翻到第 2、3 页时用户已经在找旧文章了，
+       再占一整屏轮播只会把列表往下推 */
+    page.currentPage === 1 && (
+      <>
+        <ProjectCarousel />
+        <PostCarousel />
+      </>
+    )
+  }
   <PostPage page={page} />
   {
     page.total > page.size && (

@@ -1,0 +1,84 @@
+---
+/**
+ * 相册图片轮播。
+ *
+ * 和 /gallery/ 页读的是同一份 galleryConfig.albums，所以相册增删不用两头改。
+ * 一有新照片就会自动出现在这里；一张照片都没有时整个区块不渲染。
+ *
+ * 这里用裸 <img> 而不是 CoverImage：scanAlbumPhotos 返回的已经是带 BASE_URL 的
+ * 公共资源地址（public/gallery/...），不需要 astro:assets 再处理一遍，
+ * 也就没有 LQIP 可查（LQIP 清单只覆盖 src/ 下的图片）。
+ */
+import { Icon } from "astro-icon/components";
+import Carousel from "@/components/features/Carousel.astro";
+import { galleryConfig, homeCarouselConfig, siteConfig } from "@/config";
+import { getAlbumCover, scanAlbumPhotos } from "@/utils/gallery-utils";
+import { url } from "@/utils/url-utils";
+
+const cfg = homeCarouselConfig.gallery;
+
+// 逐张展开成「照片」而不是「相册」—— 轮播的价值就是直接看到图
+// 每张照片记住自己属于哪个相册，点击时跳到该相册
+interface Slide {
+	src: string;
+	alt: string;
+	albumId: string;
+	albumName: string;
+}
+
+const slides: Slide[] = [];
+
+if (siteConfig.pages.gallery && cfg.enable) {
+	for (const album of galleryConfig.albums) {
+		if (album.password) continue; // 加密相册不进首页，别把封面泄出去
+		const photos = scanAlbumPhotos(album.id);
+		if (photos.length === 0) continue;
+		// cover.* 会被 scanAlbumPhotos 排到第一位，正好当封面用
+		const cover = getAlbumCover(album, photos);
+		const ordered = cover
+			? [cover, ...photos.filter((p) => p !== cover)]
+			: photos;
+		for (const photo of ordered) {
+			slides.push({
+				src: photo,
+				alt: album.name,
+				albumId: album.id,
+				albumName: album.name,
+			});
+			if (slides.length >= cfg.maxItems) break;
+		}
+		if (slides.length >= cfg.maxItems) break;
+	}
+}
+---
+
+<Carousel
+	title={cfg.title}
+	icon={cfg.icon}
+	href={cfg.href}
+	interval={cfg.interval}
+	empty={!cfg.enable || slides.length === 0}
+>
+	{
+		slides.map((slide) => (
+			<a
+				href={url(`/gallery/${slide.albumId}/`)}
+				class="group relative block aspect-4/3 h-full overflow-hidden rounded-(--radius-large) bg-neutral-200 dark:bg-neutral-700"
+				title={slide.albumName}
+			>
+				<img
+					src={slide.src}
+					alt={slide.alt}
+					loading="lazy"
+					decoding="async"
+					class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+				/>
+				<div class="pointer-events-none absolute inset-0 z-10 transition group-hover:bg-black/30" />
+				<span class="pointer-events-none absolute bottom-0 left-0 z-20 flex w-full items-center gap-1 bg-gradient-to-t from-black/60 to-transparent px-3 pt-6 pb-2 text-sm font-medium text-white">
+					<Icon name="material-symbols:photo-library" class="text-base" />
+					{slide.albumName}
+				</span>
+			</a>
+		))
+	}
+</Carousel>

@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import GalleryCarousel from "@/components/features/GalleryCarousel.astro";
 import AlbumCard from "@/components/pages/gallery/AlbumCard.astro";
 import { galleryConfig, siteConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
@@ -81,6 +82,9 @@ const allTags = [...new Set(albums.flatMap((a) => a.tags || []))].sort();
         </gallery-filter>
       )}
     </div>
+
+    <!-- 照片轮播（相册照片直出，点进去才是相册） -->
+    <GalleryCarousel />
 
     <!-- 相册卡片网格（独立于标题面板） -->
     {albums.length > 0 ? (

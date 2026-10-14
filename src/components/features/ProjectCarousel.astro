@@ -1,0 +1,49 @@
+---
+/**
+ * 首页「项目」轮播。
+ *
+ * 数据源和 /projects/ 页完全一致（都是 src/content/projects/ 这个 collection），
+ * 卡片也复用同一个 ProjectCard —— 首页看到的和项目页看到的必然长得一样，
+ * 不存在「两处维护、两边不一致」的问题。
+ *
+ * 只挑「重点精选」：order >= homeCarouselConfig.featuredProjectMinOrder。
+ * 没设 order 的项目 order 视为 0，自然落在门槛之下，只在 /projects/ 页出现。
+ */
+import Carousel from "@/components/features/Carousel.astro";
+import ProjectCard from "@/components/pages/projects/ProjectCard.astro";
+import { homeCarouselConfig } from "@/config";
+import { getSortedProjects } from "@/utils/content-utils";
+import { getFileDirFromPath, removeFileExtension } from "@/utils/url-utils";
+
+const cfg = homeCarouselConfig.projects;
+
+const projects = (await getSortedProjects())
+	.filter(
+		(p) => (p.data.order ?? 0) >= homeCarouselConfig.featuredProjectMinOrder,
+	)
+	.slice(0, cfg.maxItems);
+---
+
+<Carousel
+	title={cfg.title}
+	icon={cfg.icon}
+	href={cfg.href}
+	interval={cfg.interval}
+	empty={!cfg.enable || projects.length === 0}
+>
+	{
+		projects.map((p) => (
+			<ProjectCard
+				id={removeFileExtension(p.id)}
+				title={p.data.title}
+				description={p.data.description}
+				image={p.data.image}
+				basePath={getFileDirFromPath(p.filePath || "")}
+				tags={p.data.tags}
+				published={p.data.published}
+				link={p.data.link}
+				status={p.data.status}
+			/>
+		))
+	}
+</Carousel>
