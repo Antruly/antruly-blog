@@ -1,4 +1,3 @@
-import { ccMusicPlaylist } from "../constants/ccMusic";
 import type { MusicPlayerConfig } from "../types/musicConfig";
 
 // 音乐播放器配置
@@ -11,13 +10,9 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 
 	// 使用方式："meting" 走 Meting API 现取线上曲库，"local" 读主题自带歌单
 	//
-	// 当前用 meting 是有原因的：现在放的这批（原神拜年纪/新春会、HOYO-MiX、
-	// ChiliChill）是商业版权作品，没有 CC 授权，自托管等于在自己的站上公开分发。
-	// 走 meting 则音频由平台 CDN 提供，本站不落地任何音频文件，public/assets/music/
-	// 里那批 CC 曲子原样留着不动。
-	//
-	// 想切回自托管的 CC 曲库：把下面这行改成 "local" 就行，local.playlist 一直
-	// 挂着 ccMusicPlaylist，不用改别处。相关说明见 docs/cc-music.md。
+	// 用 meting 而不是 local 是有原因的：这批曲子（原神拜年纪/新春会、HOYO-MiX、
+	// ChiliChill）是商业版权作品，自托管等于在自己的站上公开分发。走 meting 则
+	// 音频由平台 CDN 提供，本站不落地任何音频文件。
 	mode: "meting",
 
 	// 默认音量 (0-1)
@@ -71,18 +66,5 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 			"https://api.injahow.cn/meting/?server=:server&type=:type&id=:id",
 			"https://api.moeyao.cn/meting/?server=:server&type=:type&id=:id",
 		],
-	},
-
-	// 本地音乐配置（当 mode 为 'local' 时使用）
-	// 歌单在 src/constants/ccMusic.ts —— 那是 scripts/fetch-cc-music.ts 生成的，
-	// 不要在这里手写曲目。要增删曲子：
-	//   1) 编辑 scripts/cc-music-sources.json
-	//   2) pnpm music:fetch        （下载到 public/assets/music/）
-	//   或 pnpm music:fetch --target=r2（传到 Cloudflare R2，歌单自动换成绝对地址）
-	// 曲目授权是 CC0 / 公有领域 / CC BY / CC BY-SA，署名信息在同一条目里。
-	//
-	// 当前 mode 是 meting，这一段不生效，留着是为了随时能一行切回去。
-	local: {
-		playlist: ccMusicPlaylist,
 	},
 };
