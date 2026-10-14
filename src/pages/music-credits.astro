@@ -1,25 +1,22 @@
 ---
 /**
- * 音乐署名页。
+ * 音乐版权页。
  *
- * CC BY / CC BY-SA 都要求「署名 + 标明授权 + 给出授权原文链接」，
- * 光在播放器里放首歌是不够的。这一页就是履行这个义务的地方。
+ * 播放器现在放的是商业版权作品，走 Meting API 从网易云音乐现取 —— 本站不存储、
+ * 也不分发音频文件。这一页负责把这件事说清楚，并给出每首曲子的出处链接。
  *
- * 内容全部读 src/constants/ccMusic.ts —— 改歌单不用动这里。
+ * 曲目清单读 src/constants/metingTracks.ts。那份清单和网易云上的歌单是分开的
+ * 两处，改了歌单记得同步，否则这页会跟实际播放的内容对不上。
  */
 import { Icon } from "astro-icon/components";
-import { ccMusicTracks } from "@/constants/ccMusic";
+import { metingTracks } from "@/constants/metingTracks";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import "@/styles/pages/common.css";
-
-const trackCount = ccMusicTracks.length;
-/** 同一张专辑的曲子共用封面，按来源去重后列一次就够 */
-const sourceCount = new Set(ccMusicTracks.map((t) => t.sourceUrl)).size;
 ---
 
 <MainGridLayout
 	title="音乐版权"
-	description="本站背景音乐的来源、作者与授权协议"
+	description="本站播放器的音乐来源与版权说明"
 >
 	<div class="card-base px-6 py-6">
 		<div class="page-heading">
@@ -33,24 +30,28 @@ const sourceCount = new Set(ccMusicTracks.map((t) => t.sourceUrl)).size;
 
 		<div class="mt-4 space-y-3 text-90 text-sm leading-relaxed">
 			<p>
-				本站的背景音乐一共 {trackCount} 首，全部来自
-				<a
-					href="https://archive.org/"
+				本站播放器的曲目由 <a
+					href="https://github.com/metowolf/Meting"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-(--primary) hover:underline">Internet Archive</a
-				>（{sourceCount} 个条目），授权协议为 CC0 / 公有领域 / CC BY / CC BY-SA ——
-				都可以商用和再分发。
+					class="text-(--primary) hover:underline">Meting</a
+				> 接口从 <a
+					href="https://music.163.com/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-(--primary) hover:underline">网易云音乐</a
+				> 实时读取，共 {metingTracks.length} 首。音频文件始终由音乐平台的 CDN 提供，
+				<strong>本站不存储、不转码、不分发任何音频文件</strong>，也不绕过平台的付费限制。
 			</p>
 			<p>
-				音频文件原样下载自 Internet Archive，没有做转码或剪辑，只是重命名后放在本站自托管。
-				下面逐首列出作者与授权，按 CC 的要求署名。
+				这些曲目都是有版权的商业作品，著作权归各自的词曲作者、演唱者与唱片公司所有。
+				下面逐首列出出处，方便定位权利人。
 			</p>
 		</div>
 
 		<ul class="mt-6 space-y-3">
 			{
-				ccMusicTracks.map((track) => (
+				metingTracks.map((track) => (
 					<li class="rounded-(--radius-large) bg-(--btn-plain-bg) px-4 py-3">
 						<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
 							<span class="font-medium text-95">{track.name}</span>
@@ -58,20 +59,12 @@ const sourceCount = new Set(ccMusicTracks.map((t) => t.sourceUrl)).size;
 						</div>
 						<div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-60 text-xs">
 							<a
-								href={track.licenseUrl}
-								target="_blank"
-								rel="noopener noreferrer license"
-								class="hover:text-(--primary) hover:underline"
-							>
-								{track.license}
-							</a>
-							<a
-								href={track.sourceUrl}
+								href={`https://music.163.com/song?id=${track.neteaseId}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="hover:text-(--primary) hover:underline"
 							>
-								来源 archive.org
+								网易云音乐
 							</a>
 						</div>
 					</li>
@@ -80,9 +73,9 @@ const sourceCount = new Set(ccMusicTracks.map((t) => t.sourceUrl)).size;
 		</ul>
 
 		<p class="mt-6 text-60 text-xs leading-relaxed">
-			权利人对授权有异议的话，欢迎
+			如果你是上述作品的权利人，认为本站的引用方式不妥，欢迎
 			<a href="/about/" class="text-(--primary) hover:underline">联系我</a
-			>，我会立即下架。
+			>，我会立即把对应曲目从歌单里撤下。
 		</p>
 	</div>
 </MainGridLayout>

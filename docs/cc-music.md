@@ -1,8 +1,20 @@
 # 背景音乐：CC 曲库自托管
 
-首页/侧栏播放器的曲子来自 Internet Archive 上**授权明确**的曲库（CC0 / 公有领域 / CC BY / CC BY-SA），
-由 `scripts/fetch-cc-music.ts` 挑选、下载、生成歌单。这份文档只记「以后会忘、忘了会出事」的部分，
-脚本细节看 `scripts/fetch-cc-music.ts` 的文件头注释。
+这是**备用**那套曲库的文档：一套来自 Internet Archive 上**授权明确**的曲子
+（CC0 / 公有领域 / CC BY / CC BY-SA），由 `scripts/fetch-cc-music.ts` 挑选、下载、生成歌单。
+这份文档只记「以后会忘、忘了会出事」的部分，脚本细节看 `scripts/fetch-cc-music.ts` 的文件头注释。
+
+> ## 当前状态：没在用
+>
+> `src/config/musicConfig.ts` 的 `mode` 现在是 `"meting"` —— 播放器放的是网易云音乐上的
+> 一份歌单（原神拜年纪/新春会那批商业版权作品），音频由平台 CDN 提供，本站不落地文件。
+> 曲目与出处列在 `src/constants/metingTracks.ts`，由 `/music-credits/` 展示。
+> 为什么不干脆自托管它们：那是公开分发版权作品，正是这套 CC 管线当初要避开的事。
+>
+> 所以下面这套 CC 曲库现在是**躺着待命**的：`src/constants/ccMusic.ts`、
+> `public/assets/music/` 都还在，`pnpm music:fetch` 照常能用，只是没接进播放器。
+> **想切回来：把 `musicConfig.ts` 里的 `mode` 改成 `"local"` 就行** —— 那个字段下面
+> 的 `local.playlist` 一直挂着 `ccMusicPlaylist`，别处一行都不用动。
 
 ## 两条硬约束
 
@@ -27,8 +39,9 @@ pnpm music:search "calm ambient"  # 搜有明确授权的曲子，按授权过�
 
 ## 换到 Cloudflare R2
 
-音频现在放在 `public/assets/music/`，跟着站点一起部署（约 36 MB，已提交进仓库）。
-曲子变多、仓库变大之后换成 R2：
+音频现在放在 `public/assets/music/`，跟着站点一起部署（约 36 MB；已在 `.gitignore` 里，
+换机器后跑一次 `pnpm music:fetch` 就能重建）。
+曲子变多、部署体积变大之后换成 R2：
 
 ```bash
 # 1. 建桶（只做一次）
