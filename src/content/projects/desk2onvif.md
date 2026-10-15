@@ -11,7 +11,7 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/Desk2ONVIF"
-  - label: "★ 1"
+  - label: "★ 2"
     icon: "material-symbols:star"
     value: "https://github.com/Antruly/Desk2ONVIF/stargazers"
 ---

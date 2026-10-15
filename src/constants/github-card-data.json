@@ -31,7 +31,7 @@
 	},
 	"antruly/httparena": {
 		"description": "The most complete HTTP open source benchmarking platform. Don't just say you're fast, prove it.",
-		"language": null,
+		"language": "C#",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
 		"license": "MIT"
 	},
@@ -50,6 +50,12 @@
 	"antruly/mysqlsyncmonitor": {
 		"description": "mysql 主备服务检查工具，断开或出现同步异常预警等功能",
 		"language": "C",
+		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
+		"license": "MIT"
+	},
+	"antruly/uvp": {
+		"description": "Build, run, and verify libuvcpp-powered C++ web services from your terminal or agent with one CLI and MCP server.",
+		"language": "TypeScript",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
 		"license": "MIT"
 	},

@@ -44,7 +44,9 @@ export const homeCarouselConfig: HomeCarouselConfig = {
 		title: "项目",
 		icon: "material-symbols:rocket-launch",
 		href: "/projects/",
-		maxItems: 6,
+		// 与 featuredProjectMinOrder 配套：order >= 50 的项目目前正好 7 个，
+		// 上限设在 6 会把最后一个（新加的 uvp）挤掉，和「精选」的定义对不上。
+		maxItems: 7,
 		// 设为 0：项目卡片里有链接按钮，自动轮播会让人点不中
 		interval: 0,
 	},
