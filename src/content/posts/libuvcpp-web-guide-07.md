@@ -42,7 +42,7 @@ C++ 生态中三个主流框架：
 | 断言风格 | `EXPECT_*` / `ASSERT_*` | 自然表达式 | 自然表达式 |
 | Mock 支持 | Google Mock 集成 | 需第三方 | 需第三方 |
 
-**libuvcpp 项目本身用 GoogleTest** ，如果你要贡献代码或深度定制，用 GoogleTest 能和项目保持一致。如果是自己的应用项目，**Catch2 和 doctest 的编译速度优势在大项目中非常明显** ——10 万行代码库的完整测试构建，GoogleTest 约 15 分钟，doctest 约 5 分钟[reference:0]。
+**libuvcpp 项目本身用 GoogleTest** ，如果你要贡献代码或深度定制，用 GoogleTest 能和项目保持一致。如果是自己的应用项目，**Catch2 和 doctest 的编译速度优势在大项目中非常明显** ——10 万行代码库的完整测试构建，GoogleTest 约 15 分钟，doctest 约 5 分钟。
 
 下面的示例统一用 GoogleTest，因为它与 libuvcpp 的测试风格一致，且 Mock 支持更完整。
 
@@ -429,7 +429,7 @@ valgrind --leak-check=full \
          ./myapp
 ```
 
-**Valgrind 的缺点是慢** （通常 10-50 倍性能损失），不适合跑压测。但它的**未初始化内存检测** （`--track-origins=yes`）比 ASan 更细，适合排查“偶发读到垃圾值”这类问题[reference:1]。
+**Valgrind 的缺点是慢** （通常 10-50 倍性能损失），不适合跑压测。但它的**未初始化内存检测** （`--track-origins=yes`）比 ASan 更细，适合排查“偶发读到垃圾值”这类问题。
 
 **libuv 自身的库代码可能有一些“still reachable”的分配** ，这不是你的代码的问题。在 Valgrind 报告中区分 `definitely lost`（你的代码泄漏）和 `still reachable`（框架/库持有的全局对象）。
 

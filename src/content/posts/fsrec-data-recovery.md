@@ -18,11 +18,11 @@ comment: true
 
 项目地址：<https://github.com/Antruly/fsrec>
 
-fsrec 是一款面向 Windows 的数据恢复工具，**不依赖任何第三方恢复引擎** ，而是直接从文件系统底层数据结构出发——解析引导扇区（BPB）、NTFS 主文件表（`$MFT`）、FAT 目录项与数据运行（Data Run），在内存中重建完整的目录树[reference:0][reference:1]。你可以像浏览普通文件一样浏览那些已被删除、被清空回收站，甚至在分区被误格式化后仍残留在磁盘上的文件，并**按原目录结构** 把它们恢复到另一块磁盘。
+fsrec 是一款面向 Windows 的数据恢复工具，**不依赖任何第三方恢复引擎** ，而是直接从文件系统底层数据结构出发——解析引导扇区（BPB）、NTFS 主文件表（`$MFT`）、FAT 目录项与数据运行（Data Run），在内存中重建完整的目录树。你可以像浏览普通文件一样浏览那些已被删除、被清空回收站，甚至在分区被误格式化后仍残留在磁盘上的文件，并**按原目录结构** 把它们恢复到另一块磁盘。
 
 ### 项目背景与技术选型
 
-作为一个从零实现的多文件系统数据恢复工具，fsrec 的技术栈选择如下[reference:2][reference:3]：
+作为一个从零实现的多文件系统数据恢复工具，fsrec 的技术栈选择如下：
 
 | 维度 | 说明 |
 | --- | --- |
@@ -35,29 +35,29 @@ fsrec 是一款面向 Windows 的数据恢复工具，**不依赖任何第三方
 
 ### 功能特性一览
 
-fsrec 提供了完整的数据恢复工作流，从磁盘扫描到文件恢复，再到实时监控，一应俱全[reference:4][reference:5]：
+fsrec 提供了完整的数据恢复工作流，从磁盘扫描到文件恢复，再到实时监控，一应俱全：
 
 #### 核心恢复能力
 
-  * **多文件系统支持** — 同时支持 **NTFS / FAT12 / FAT16 / FAT32 / exFAT** 五种文件系统[reference:6]
+  * **多文件系统支持** — 同时支持 **NTFS / FAT12 / FAT16 / FAT32 / exFAT** 五种文件系统
   * **磁盘枚举** — 列出物理磁盘与盘符，自动识别并锁定系统盘（磁盘 0，禁止选择），防止误操作
   * **引导扇区解析** — 读取 BPB：字节/扇区、扇区/簇、`$MFT` 起始 LCN、记录大小等
   * **`$MFT` 解析** — 遍历文件记录，USA 修复，提取 `$STANDARD_INFORMATION` / `$FILE_NAME` / `$DATA`
   * **数据运行解析** — 支持 resident / non-resident 属性，含稀疏簇处理
   * **目录树重建** — 依据父引用与文件名（含 `$MFT` 编号兜底）构建完整树
-  * **分区级扫描** — `raw_scan_all` 遍历整盘，定位每个分区（NTFS 经 `$MFT` 搜索，FAT/exFAT 经 MBR 分区表）并分别缓存[reference:7]
-  * **FAT/exFAT 专项解析** — 同时解析 FAT12/16/32 与 exFAT（BPB / 目录项 / FAT 链 / exFAT 文件+流+名称项）[reference:8]
+  * **分区级扫描** — `raw_scan_all` 遍历整盘，定位每个分区（NTFS 经 `$MFT` 搜索，FAT/exFAT 经 MBR 分区表）并分别缓存
+  * **FAT/exFAT 专项解析** — 同时解析 FAT12/16/32 与 exFAT（BPB / 目录项 / FAT 链 / exFAT 文件+流+名称项）
 
 #### 交互与体验
 
   * **搜索过滤** — 前端按名称 / 类型快速筛选文件
-  * **选择性恢复** — 保留原目录结构写入输出目录，同名文件自动改名（追加 `_1`、`_2`…），支持**暂停 / 继续 / 停止**[reference:9]
-  * **实时进度** — WebSocket 推送总体进度 + 当前文件 + 每文件字节进度；刷新页面后自动恢复进行中的任务[reference:10]
+  * **选择性恢复** — 保留原目录结构写入输出目录，同名文件自动改名（追加 `_1`、`_2`…），支持**暂停 / 继续 / 停止**
+  * **实时进度** — WebSocket 推送总体进度 + 当前文件 + 每文件字节进度；刷新页面后自动恢复进行中的任务
 
 #### 运维与监控
 
-  * **磁盘监控** — 实时读取速度（全局 + 单盘）、点击磁盘展开**任务管理器风格动态折线图** 、磁盘**热插拔** 自动刷新并提示任务中断[reference:11]
-  * **安全与空间** — 源盘锁定（目录选择器禁用源盘）、空间预估与不足警告[reference:12]
+  * **磁盘监控** — 实时读取速度（全局 + 单盘）、点击磁盘展开**任务管理器风格动态折线图** 、磁盘**热插拔** 自动刷新并提示任务中断
+  * **安全与空间** — 源盘锁定（目录选择器禁用源盘）、空间预估与不足警告
 
 ### 工作原理
 
@@ -88,7 +88,7 @@ Web UI <--> HTTP/WebSocket <--> libuvcpp 服务器
 
 #### 直接下载（推荐）
 
-从 [Releases](<https://github.com/Antruly/fsrec/releases>) 下载 `fsrec_Setup_xxx.exe`，双击安装（全中文向导）[reference:13]。安装完成后[reference:14]：
+从 [Releases](<https://github.com/Antruly/fsrec/releases>) 下载 `fsrec_Setup_xxx.exe`，双击安装（全中文向导）。安装完成后：
 
   1. 自动触发 UAC 提权（`requireAdministrator` 清单）
   2. 服务在后台启动，并自动打开浏览器访问 Web UI
@@ -96,7 +96,7 @@ Web UI <--> HTTP/WebSocket <--> libuvcpp 服务器
 
 #### 从源码构建
 
-前置条件：Windows、Visual Studio 2022（MSVC，需匹配预编译的 libuvcpp 二进制）、CMake ≥ 3.20[reference:15]。
+前置条件：Windows、Visual Studio 2022（MSVC，需匹配预编译的 libuvcpp 二进制）、CMake ≥ 3.20。
 
 ```bash
 git clone https://github.com/Antruly/fsrec.git

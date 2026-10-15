@@ -17,11 +17,11 @@ comment: true
 
 ### 一、Desk2ONVIF 是什么？
 
-Desk2ONVIF 做的事情可以用一句话概括：**把 Windows 桌面变成一台标准的 ONVIF Profile S 网络摄像机。** [reference:0]
+Desk2ONVIF 做的事情可以用一句话概括：**把 Windows 桌面变成一台标准的 ONVIF Profile S 网络摄像机。**
 
-具体来说，海康、大华、Milestone XProtect、Pelco 等 NVR 能够像发现普通 IP 摄像机一样自动发现它（通过 WS-Discovery），把它作为 IP 通道加进来，然后拉取 H.264 码流——**不需要任何硬件编码器。**[reference:1]
+具体来说，海康、大华、Milestone XProtect、Pelco 等 NVR 能够像发现普通 IP 摄像机一样自动发现它（通过 WS-Discovery），把它作为 IP 通道加进来，然后拉取 H.264 码流——**不需要任何硬件编码器。**
 
-典型用场包括：收银机 / 柜员终端 / SCADA 画面 / 考试监考 / 工控屏的集中录像。这些场景下，NVR 需要的是“把这块屏幕录下来”，而不是再装一台摄像机对着它拍。[reference:2]
+典型用场包括：收银机 / 柜员终端 / SCADA 画面 / 考试监考 / 工控屏的集中录像。这些场景下，NVR 需要的是“把这块屏幕录下来”，而不是再装一台摄像机对着它拍。
 
 **核心功能一览 ：**
 
@@ -34,9 +34,9 @@ Desk2ONVIF 做的事情可以用一句话概括：**把 Windows 桌面变成一�
 | 设备管理 | 配置热生效、OSD 水印、NTP 对时、延时档位、DXGI 自恢复、审计日志 |
 | Web 控制台 | Vue 3 前端，`http://127.0.0.1:8080` |
 
-> 数据来源：Desk2ONVIF 项目 README[reference:3]
+> 数据来源：Desk2ONVIF 项目 README
 
-项目对标 DeskCamera（Baltic 公司的闭源收费软件，PC-locked 永久授权或订阅制，试用版输出带水印），是这一能力的**开源实现** ：源码可读可改、自行编译即可用、无授权绑定与硬件锁、无输出水印。Desk2ONVIF 是独立实现，与 Baltic / DeskCamera 无任何关联。[reference:4]
+项目对标 DeskCamera（Baltic 公司的闭源收费软件，PC-locked 永久授权或订阅制，试用版输出带水印），是这一能力的**开源实现** ：源码可读可改、自行编译即可用、无授权绑定与硬件锁、无输出水印。Desk2ONVIF 是独立实现，与 Baltic / DeskCamera 无任何关联。
 
 **项目地址 ：** <https://github.com/Antruly/Desk2ONVIF>
 
@@ -46,7 +46,7 @@ Desk2ONVIF 做的事情可以用一句话概括：**把 Windows 桌面变成一�
 
 Desk2ONVIF 的 README 中有一句非常关键的话：
 
-> **“本项目的 web 服务层整个跑在 libuvcpp 上面 ：HTTP、WebSocket、ONVIF SOAP 信封、WS-Discovery 的 UDP 收发都是它的模块。”**[reference:5]
+> **“本项目的 web 服务层整个跑在 libuvcpp 上面 ：HTTP、WebSocket、ONVIF SOAP 信封、WS-Discovery 的 UDP 收发都是它的模块。”**
 
 翻译一下：这个项目的**网络通信层完全由 libuvcpp 承载** 。具体包括：
 
@@ -58,29 +58,29 @@ Desk2ONVIF 的 README 中有一句非常关键的话：
 | WS-Discovery | UDP 3702 收发（设备发现协议） |
 | 前端控制台 | HTTP 静态文件 + WebSocket 实时通信 |
 
-Desk2ONVIF 的架构中，libuvcpp 位于“整条管线”的基础层，源码编成静态库 `desk2onvif_core`，`desk2onvif.exe` 只是薄薄一层命令行。[reference:6]
+Desk2ONVIF 的架构中，libuvcpp 位于“整条管线”的基础层，源码编成静态库 `desk2onvif_core`，`desk2onvif.exe` 只是薄薄一层命令行。
 
 项目作者在 README 中还写了一段非常直接的推荐：
 
-> **“顺带说一句 ：有 libuvcpp 打底，写 web 项目这件事会轻松很多。HTTP 路由、WebSocket 升级、SOAP 信封、UDP 收发这些全在库里现成，于是‘做一个 web 服务’基本退化成描述清楚需求、然后用它当框架落地。”**[reference:7]
+> **“顺带说一句 ：有 libuvcpp 打底，写 web 项目这件事会轻松很多。HTTP 路由、WebSocket 升级、SOAP 信封、UDP 收发这些全在库里现成，于是‘做一个 web 服务’基本退化成描述清楚需求、然后用它当框架落地。”**
 
 ### 三、AI 大模型的深度参与
 
 Desk2ONVIF 的 README 中有一段专门记录 AI 辅助开发的内容：
 
-> **“这个项目的开发过程里大量使用了 AI 编程工具 （Claude Code）。第一个能跑的 web 服务原型是一天之内做出来的，之后在此基础上迭代了多个版本。”**[reference:8]
+> **“这个项目的开发过程里大量使用了 AI 编程工具 （Claude Code）。第一个能跑的 web 服务原型是一天之内做出来的，之后在此基础上迭代了多个版本。”**
 
 这里有几个关键信息值得展开：
 
 #### 3.1 一天出原型
 
-一个功能完整的 Web 服务原型——包括 HTTP 路由、WebSocket 通信、ONVIF SOAP 信封、WS-Discovery UDP 收发——在**一天之内** 做出来了。README 明确说：“主要功劳在这里（libuvcpp），不在别的什么地方。”[reference:9]
+一个功能完整的 Web 服务原型——包括 HTTP 路由、WebSocket 通信、ONVIF SOAP 信封、WS-Discovery UDP 收发——在**一天之内** 做出来了。README 明确说：“主要功劳在这里（libuvcpp），不在别的什么地方。”
 
 这意味着什么？libuvcpp 把网络通信层的复杂度封装到了一定程度，使得 AI 编程工具能够快速理解框架的 API、生成可运行的代码。**框架的文档质量、API 规范性和功能覆盖面 ，直接决定了 AI 生成代码的速度和质量。**
 
 #### 3.2 迭代式开发
 
-原型之后，项目分轮次迭代了多个版本：采集、RTSP、ONVIF、前端、音频、多通道、OSD、自恢复这些能力是逐轮加上去的，每一轮都配了脚本化的验收。[reference:10]
+原型之后，项目分轮次迭代了多个版本：采集、RTSP、ONVIF、前端、音频、多通道、OSD、自恢复这些能力是逐轮加上去的，每一轮都配了脚本化的验收。
 
 这种“原型 → 迭代 → 验收”的开发节奏，正是 AI 辅助开发的典型模式。而 libuvcpp 作为底层框架，在每一轮迭代中都提供了稳定的支撑。
 
@@ -88,7 +88,7 @@ Desk2ONVIF 的 README 中有一段专门记录 AI 辅助开发的内容：
 
 项目作者特别提到了一点：
 
-> **“验证脚本的密度远高于同类项目 （八套验收、变异检验、端到端探针），因为 AI 写的代码更需要被‘和别人对账’，而不是靠读一遍觉得对。”**[reference:11]
+> **“验证脚本的密度远高于同类项目 （八套验收、变异检验、端到端探针），因为 AI 写的代码更需要被‘和别人对账’，而不是靠读一遍觉得对。”**
 
 这是一个非常诚实的观察。AI 生成的代码可能存在逻辑漏洞或边界情况处理不当，因此 Desk2ONVIF 的验收密度远高于同类项目。但这恰恰说明了 libuvcpp 的价值——**框架本身提供了稳定、经过测试的底层能力 ，AI 只需要关注业务逻辑层，验收的重点也放在业务逻辑上，而不是网络通信层的可靠性上。**
 
@@ -132,9 +132,9 @@ Desk2ONVIF 虽然没有使用 REA（它是从头开始的项目，不是逆向�
 | 前端 | Vue 3 + Vite |
 | 构建工具链 | MinGW64 / MSYS2 + CMake + Ninja |
 
-> 数据来源：Desk2ONVIF README[reference:12][reference:13]
+> 数据来源：Desk2ONVIF README
 
-**为什么是 MinGW64 而不是 MSVC ？** 项目 README 中有解释：libuvcpp 的 SOAP 模块在所有预编译包里都是关着的（`UVCPP_WSDL_ENABLE 0`），而 ONVIF 的 SOAP 信封层要靠它，只能从源码编；从源码编就需要一套和 FFmpeg 的导入库格式对得上的工具链。[reference:14]
+**为什么是 MinGW64 而不是 MSVC ？** 项目 README 中有解释：libuvcpp 的 SOAP 模块在所有预编译包里都是关着的（`UVCPP_WSDL_ENABLE 0`），而 ONVIF 的 SOAP 信封层要靠它，只能从源码编；从源码编就需要一套和 FFmpeg 的导入库格式对得上的工具链。
 
 这反而说明了一个事实：**libuvcpp 的预编译包覆盖了大部分场景 ，只有在需要特定模块（如 SOAP）时，才需要从源码构建。** 对于大多数 Web 开发场景，预编译包已经足够。
 
@@ -144,7 +144,7 @@ Desk2ONVIF 虽然没有使用 REA（它是从头开始的项目，不是逆向�
 
   * Windows 10 / 11 x64
   * 需要能跑 DXGI 桌面复制（Win8+ 的桌面复制 API）
-  * 分发时整个 `bin\` 目录一起拷走——除 `desk2onvif.exe` 外还有 16 个 DLL（FFmpeg、OpenSSL、libuvcpp 及其依赖），构建时自动部署[reference:15]
+  * 分发时整个 `bin\` 目录一起拷走——除 `desk2onvif.exe` 外还有 16 个 DLL（FFmpeg、OpenSSL、libuvcpp 及其依赖），构建时自动部署
 
 **获取方式 ：**
 
@@ -152,7 +152,7 @@ Desk2ONVIF 虽然没有使用 REA（它是从头开始的项目，不是逆向�
   * 绿色版：[Desk2ONVIF-0.1.9-win64.zip](<https://github.com/Antruly/Desk2ONVIF/releases/latest/download/Desk2ONVIF-0.1.9-win64.zip>)
   * 全部版本：[Releases 页面](<https://github.com/Antruly/Desk2ONVIF/releases>)
 
-安装完成后：启动 `Desk2ONVIF` → 浏览器打开 `http://127.0.0.1:8080` 查看控制台 → 在 NVR 里“添加 IP 摄像机”即可。[reference:16]
+安装完成后：启动 `Desk2ONVIF` → 浏览器打开 `http://127.0.0.1:8080` 查看控制台 → 在 NVR 里“添加 IP 摄像机”即可。
 
 ### 七、许可证说明
 
@@ -163,9 +163,9 @@ Desk2ONVIF 的许可证分两部分，README 中写得很清楚：
 | 本仓库源码（自己写的部分） | MIT |
 | Releases 分发的可执行文件 | GPL-3.0-or-later |
 
-**为什么二进制不是 MIT ？** 程序链接 FFmpeg，而随包分发的这个 FFmpeg 构建带 `--enable-gpl --enable-libx264`，其中 x264 是 GPL-2.0-or-later——一旦链接进二进制，整个可执行文件就成为 GPL 下的组合作品。[reference:17]
+**为什么二进制不是 MIT ？** 程序链接 FFmpeg，而随包分发的这个 FFmpeg 构建带 `--enable-gpl --enable-libx264`，其中 x264 是 GPL-2.0-or-later——一旦链接进二进制，整个可执行文件就成为 GPL 下的组合作品。
 
-所以：**读、改、复用源码 → MIT ，随便用，署名即可。分发由它构建出的可执行文件 → 受 GPL-3.0 约束，要提供对应源码。**[reference:18]
+所以：**读、改、复用源码 → MIT ，随便用，署名即可。分发由它构建出的可执行文件 → 受 GPL-3.0 约束，要提供对应源码。**
 
 ### 八、对 libuvcpp 的意义
 

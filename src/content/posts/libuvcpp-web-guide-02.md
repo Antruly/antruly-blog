@@ -31,7 +31,7 @@ app.get("/user/:id", [](uvcpp_web_request& req,
 });
 ```
 
-`req.param("id")` 返回的是 `const std::string*`，参数不存在时返回 `nullptr`——这比返回空字符串更明确，不会把“参数没传”和“参数是空串”混在一起[reference:0]。
+`req.param("id")` 返回的是 `const std::string*`，参数不存在时返回 `nullptr`——这比返回空字符串更明确，不会把“参数没传”和“参数是空串”混在一起。
 
 多个参数可以混搭：
 
@@ -54,7 +54,7 @@ app.get("/files/*path", [](uvcpp_web_request& req,
 });
 ```
 
-通配符**至少吃一段** 。`/files/*path` 匹配 `/files/a`，但不匹配 `/files`——如果连前缀本身也要处理，需要单独注册 `/files` 的路由。`serve_static` 内部就是靠这个机制工作的[reference:1]。
+通配符**至少吃一段** 。`/files/*path` 匹配 `/files/a`，但不匹配 `/files`——如果连前缀本身也要处理，需要单独注册 `/files` 的路由。`serve_static` 内部就是靠这个机制工作的。
 
 #### 1.3 HTTP 方法
 
@@ -65,7 +65,7 @@ app.get("/resource", get_handler);
 app.post("/resource", post_handler);
 ```
 
-当请求方法不匹配已注册的路由时，框架自动返回 405 并填充 `Allow` 头；`OPTIONS` 请求自动生成允许的方法列表。这些语义是框架保证的，不需要你手写[reference:2]。
+当请求方法不匹配已注册的路由时，框架自动返回 405 并填充 `Allow` 头；`OPTIONS` 请求自动生成允许的方法列表。这些语义是框架保证的，不需要你手写。
 
 ### 二、中间件链：Express 风格的 `next()` 模型
 
@@ -88,7 +88,7 @@ uvcpp_web_middleware auth_middleware() {
 }
 ```
 
-中间件和路由 handler 的类型完全相同（`uvcpp_web_handler`）。区别只在行为：**不调`next()` 就是这一环直接结束，链不再往下走**[reference:3]。
+中间件和路由 handler 的类型完全相同（`uvcpp_web_handler`）。区别只在行为：**不调`next()` 就是这一环直接结束，链不再往下走**。
 
 #### 2.2 执行顺序与“前后包裹”
 
@@ -437,7 +437,7 @@ int main() {
 
 **`app.use(auth_middleware())` 放在公开路由之后**，这样 `/hello`、`/user/:id`、`/files/*path` 不需要鉴权，而后续注册的 `/api/upload` 和 `/api/slow` 会经过鉴权。中间件的“路径前缀”作用域通过注册顺序来控制——先注册的中间件作用于所有后续路由。
 
-**异步 handler 中`next` 按值捕获**。框架看到 `next` 被捕获到异步回调中，就知道这一环会异步恢复，不会提前结束请求。如果只是同步处理，`next` 可以直接调用[reference:4]。
+**异步 handler 中`next` 按值捕获**。框架看到 `next` 被捕获到异步回调中，就知道这一环会异步恢复，不会提前结束请求。如果只是同步处理，`next` 可以直接调用。
 
 **`resp.end()` 是“我写完了”的标记，不是发送**。框架在 handler 返回后统一收尾时才真正把响应写出去。
 

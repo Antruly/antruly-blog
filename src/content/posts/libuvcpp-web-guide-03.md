@@ -21,15 +21,15 @@ libuvcpp 的 WebSocket 支持正是为此而生。这篇进入实时通信的世
 
 先理清一个容易混淆的点：libuvcpp 有两层 WebSocket API。
 
-**协议层** （`src/web/` 下的 `uvcpp_ws_server` / `uvcpp_ws_client` / `uvcpp_ws_connection`）是 RFC 6455 的完整实现——握手、帧解析、掩码、分片重组、压缩、关闭握手、会话表。它建在 `uvcpp_tcp_client` 之上，需要你自己管连接生命周期[reference:0]。
+**协议层** （`src/web/` 下的 `uvcpp_ws_server` / `uvcpp_ws_client` / `uvcpp_ws_connection`）是 RFC 6455 的完整实现——握手、帧解析、掩码、分片重组、压缩、关闭握手、会话表。它建在 `uvcpp_tcp_client` 之上，需要你自己管连接生命周期。
 
 **框架层** （webapp 模块下的 `app.websocket()` 和 `uvcpp_web_ws_client`）在协议层之上再包了一层——路由挂载、自动升级、闲置超时、自动重连。
 
-写业务应用优先用框架层。除非你要的就是裸的协议层，否则 `app.websocket()` 是更省心的入口[reference:1]。
+写业务应用优先用框架层。除非你要的就是裸的协议层，否则 `app.websocket()` 是更省心的入口。
 
 ### 二、注册第一个 WebSocket 端点
 
-`uvcpp_web_app` 的 `websocket()` 方法接收一个路由模式和一个 handler，模式和 HTTP 路由完全相同——路径参数 `:id`、通配符 `*path` 都支持，但 **WS 路由和 HTTP 路由是两张独立的表** ，不会互相干扰[reference:2]。
+`uvcpp_web_app` 的 `websocket()` 方法接收一个路由模式和一个 handler，模式和 HTTP 路由完全相同——路径参数 `:id`、通配符 `*path` 都支持，但 **WS 路由和 HTTP 路由是两张独立的表** ，不会互相干扰。
 
 ```cpp
 #include <webapp/uvcpp_web_app.h>
@@ -100,7 +100,7 @@ app.websocket("/chat/:room", [](uvcpp_web_ws_request& ws) {
 
 **几个关键点 ：**
 
-**`on_close` 的签名是 `(code, reason)`，不是 `(connection*)`。** 这一点在 libuvcpp 的 README 中特别标注过——写错签名编译器不会报错，但回调永远不会被正确调用[reference:3]。
+**`on_close` 的签名是 `(code, reason)`，不是 `(connection*)`。** 这一点在 libuvcpp 的 README 中特别标注过——写错签名编译器不会报错，但回调永远不会被正确调用。
 
 **连接的所有权归框架 ，回调的生命周期也由框架管理。** 你不需要（也不应该）在 `on_close` 中 delete 任何东西。框架会在连接断开后回收。
 
@@ -262,7 +262,7 @@ conn->on_text([room](const std::string& msg) {
 
 ### 六、与 HTTP 路由共存
 
-WS 端点和 HTTP 路由注册在同一个 `uvcpp_web_app` 上，互不干扰。**同一路径可以同时注册 HTTP 和 WS 路由** ——框架根据请求是否携带 `Upgrade: websocket` 头来决定走哪条路径[reference:4]。
+WS 端点和 HTTP 路由注册在同一个 `uvcpp_web_app` 上，互不干扰。**同一路径可以同时注册 HTTP 和 WS 路由** ——框架根据请求是否携带 `Upgrade: websocket` 头来决定走哪条路径。
 
 ```cpp
 uvcpp_web_app app;
@@ -303,7 +303,7 @@ app.websocket("/chat", [](uvcpp_web_ws_request& ws) {
 
 ### 七、WSS：TLS 上的 WebSocket
 
-如果你的应用启用了 SSL（`app.enable_ssl(...)`），WebSocket 自动就是 WSS——**TLS 在传输层 ，WS 在应用层，两者是正交的**[reference:5]。
+如果你的应用启用了 SSL（`app.enable_ssl(...)`），WebSocket 自动就是 WSS——**TLS 在传输层 ，WS 在应用层，两者是正交的**。
 
 ```cpp
 uvcpp_ssl_context ctx;
@@ -314,7 +314,7 @@ app.websocket("/chat", handler);   // 自动就是 wss://
 app.start();
 ```
 
-前端只需要把连接 URL 从 `ws://` 改成 `wss://`，服务端零改动。如果 SSL 配置有误，`start()` 返回 `UV_EINVAL`，不会静默降级成明文——错误原因可以通过 `ssl_error()` 获取[reference:6]。
+前端只需要把连接 URL 从 `ws://` 改成 `wss://`，服务端零改动。如果 SSL 配置有误，`start()` 返回 `UV_EINVAL`，不会静默降级成明文——错误原因可以通过 `ssl_error()` 获取。
 
 ### 八、完整示例：一个带房间和日志的实时聊天服务
 

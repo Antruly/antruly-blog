@@ -28,7 +28,7 @@ libuvcpp 的版本演进有一条清晰的脉络：
 | v1.3.0 | 多事件循环横向扩展（`set_loops`），大量性能与语义修复，十二篇指南 |
 | v1.4.0 | 当前版本，1.1.x–1.3.x 全部改动折叠，新增 WSDL/SOAP 模块、JSON 反射、PageHeap 门禁 |
 
-当前源码树就是 **1.4.0** ，`UVCPP_VERSION_STRING` 报告的就是这个值[reference:0]。v1.0.0 到 v1.4.0 是已打标签的正式发布。
+当前源码树就是 **1.4.0** ，`UVCPP_VERSION_STRING` 报告的就是这个值。v1.0.0 到 v1.4.0 是已打标签的正式发布。
 
 模块分层从下往上：
 
@@ -49,13 +49,13 @@ libuvcpp 的版本演进有一条清晰的脉络：
 └──────────────┘
 ```
 
-再往上还有 **webapp** ——建在 web 模块之上的应用框架，写业务 handler 就行，不用拼报文[reference:1]。
+再往上还有 **webapp** ——建在 web 模块之上的应用框架，写业务 handler 就行，不用拼报文。
 
 ### 二、核心模块速查：你手里有哪些牌
 
 #### 2.1 Handle + Req：底层基础设施
 
-libuvcpp 把 libuv 的核心句柄和请求封装为 C++ 类，命名统一为 `uvcpp_` 前缀的下划线风格[reference:2]：
+libuvcpp 把 libuv 的核心句柄和请求封装为 C++ 类，命名统一为 `uvcpp_` 前缀的下划线风格：
 
 | 类别 | 类 |
 | --- | --- |
@@ -80,7 +80,7 @@ libuvcpp 把 libuv 的核心句柄和请求封装为 C++ 类，命名统一为 `
 | `uvcpp_udp_client` | UDP 客户端，双模式发送/接收 |
 | `uvcpp_udp_server` | UDP 服务端，`bind()` / `recv_start()` |
 
-TCP 服务端有一点值得注意：**连接回调是`listen()` 的第一个参数，没有单独的 `on_connection()`**。所有连接共用同一个读回调（通过 `set_read_callback()` 设置），数据、对端关闭、读错误被明确拆成三个事件[reference:3]。
+TCP 服务端有一点值得注意：**连接回调是`listen()` 的第一个参数，没有单独的 `on_connection()`**。所有连接共用同一个读回调（通过 `set_read_callback()` 设置），数据、对端关闭、读错误被明确拆成三个事件。
 
 #### 2.3 Web 模块（`UVCPP_BUILD_WEB=ON`）
 
@@ -101,7 +101,7 @@ TCP 服务端有一点值得注意：**连接回调是`listen()` 的第一个参
 
   * `UVCPP_ENABLE_ZLIB=ON`——WebSocket 的 Per-Message Deflate 压缩（RFC 7692）
   * `UVCPP_ENABLE_OPENSSL=ON`——HTTPS（WSS）走 SSL/TLS 模块
-  * `UVCPP_ENABLE_NGHTTP2=ON`——HTTP/2（RFC 9113）走 nghttp2 静态链入[reference:4]
+  * `UVCPP_ENABLE_NGHTTP2=ON`——HTTP/2（RFC 9113）走 nghttp2 静态链入
 
 #### 2.4 WebApp 框架（`UVCPP_BUILD_WEBAPP=ON`）
 
@@ -122,17 +122,17 @@ TCP 服务端有一点值得注意：**连接回调是`listen()` 的第一个参
 | `uvcpp_log` / `uvcpp_log_console` | 两级日志：等级 + 模块，sink 可插拔 |
 | `uvcpp_web_json` | nlohmann/json 的收口层——不让异常穿透 libuv 回调 |
 
-webapp 模块通过 FetchContent 拉入 nlohmann/json 作为 JSON 后端[reference:5]。
+webapp 模块通过 FetchContent 拉入 nlohmann/json 作为 JSON 后端。
 
 ### 三、高级模块：1.4.0 的增量能力
 
 #### 3.1 HTTP/2：只走 TLS + ALPN 的明确取舍
 
-HTTP/2 基于 nghttp2 静态链入，通过 `UVCPP_ENABLE_NGHTTP2=ON` 显式开启。**`UVCPP_ENABLE_NGHTTP2` 在 `UVCPP_ENABLE_OPENSSL=OFF` 时会强制关闭**——给一条 warning，而不是留一个根本跑不起来的配置[reference:6]。
+HTTP/2 基于 nghttp2 静态链入，通过 `UVCPP_ENABLE_NGHTTP2=ON` 显式开启。**`UVCPP_ENABLE_NGHTTP2` 在 `UVCPP_ENABLE_OPENSSL=OFF` 时会强制关闭**——给一条 warning，而不是留一个根本跑不起来的配置。
 
 设计上的关键取舍：**本库的 h2 只走 TLS + ALPN**——不做 h2c、不做 prior-knowledge、不做 RFC 8441、不做 `:protocol`。没有 ALPN 就没有可协商的东西，自动“升级”只能靠猜。
 
-底层的 `uvcpp_http_server` 需要 `set_http2_enabled(true)` **并且** 在 SSL context 上显式设置 `set_alpn_select_protos({"h2","http/1.1"})`；`uvcpp_http_client` 只需要 `set_http2_enabled(true)`（它自己构建 per-connection ALPN 列表）；而 `uvcpp_web_app` 把这些都替你接好了[reference:7]。
+底层的 `uvcpp_http_server` 需要 `set_http2_enabled(true)` **并且** 在 SSL context 上显式设置 `set_alpn_select_protos({"h2","http/1.1"})`；`uvcpp_http_client` 只需要 `set_http2_enabled(true)`（它自己构建 per-connection ALPN 列表）；而 `uvcpp_web_app` 把这些都替你接好了。
 
 已知的一项待办：**流级背压** （`pause_stream()` / `resume_stream()`、`peer_window_size()`）已经在协议层实现，但**暂无应用层调用方** ——框架侧没有任何调用点，h2 上“边收边给”的流式请求体因此仍不可达。
 
@@ -144,13 +144,13 @@ HTTP/2 基于 nghttp2 静态链入，通过 `UVCPP_ENABLE_NGHTTP2=ON` 显式开�
 | `uvcpp_ssl` | 每连接 SSL 封装，`handshake()` / `read()` / `write()` / `shutdown()` |
 | `uvcpp_ssl_common` | `tls_version`、`tls_mode`、`tls_verify_mode`、`tls_cert_info` 枚举/结构体 |
 
-TLS 侧有一个安全细节值得强调：`tls_verify_mode::PEER_STRICT` 在客户端侧**真的会校验主机名** ——`connect()` 收到的那个名字被钉给证书（数字 IP 字面量走 `X509_VERIFY_PARAM_set1_ip_asc()`，其余走 `set1_host()`），名字对不上的对端**建立不起来** 。它此前与 `PEER` **完全等价** （服务端侧至今仍然等价：本库的服务端不发 SNI、也不要求客户端证书，没有可校验的名字）[reference:8]。
+TLS 侧有一个安全细节值得强调：`tls_verify_mode::PEER_STRICT` 在客户端侧**真的会校验主机名** ——`connect()` 收到的那个名字被钉给证书（数字 IP 字面量走 `X509_VERIFY_PARAM_set1_ip_asc()`，其余走 `set1_host()`），名字对不上的对端**建立不起来** 。它此前与 `PEER` **完全等价** （服务端侧至今仍然等价：本库的服务端不发 SNI、也不要求客户端证书，没有可校验的名字）。
 
 #### 3.3 Expand 内存池（默认关闭）
 
 TCMalloc 风格的内存池：页堆、span 分配器、线程缓存、enterprise 分配器。用于降低高频异步场景下的分配开销。
 
-**自 v1.1.0 起默认关闭** （`UVCPP_BUILD_EXPAND=OFF`），需要显式传 `-DUVCPP_BUILD_EXPAND=ON` 才启用。预编译产物是**带池** 发布的；使用者**什么都不用传** ——包里的 `uvcpp/uvcpp_config.h` 给出这个包实际用的值，自己再定义成别的值会直接 `#error`，而不是静默的分配器错配[reference:9]。
+**自 v1.1.0 起默认关闭** （`UVCPP_BUILD_EXPAND=OFF`），需要显式传 `-DUVCPP_BUILD_EXPAND=ON` 才启用。预编译产物是**带池** 发布的；使用者**什么都不用传** ——包里的 `uvcpp/uvcpp_config.h` 给出这个包实际用的值，自己再定义成别的值会直接 `#error`，而不是静默的分配器错配。
 
 #### 3.4 WSDL/SOAP 模块（`UVCPP_ENABLE_WSDL=ON`）
 
@@ -159,15 +159,15 @@ TCMalloc 风格的内存池：页堆、span 分配器、线程缓存、enterpris
   * **WSDL 文档解析与发布** ——把 WSDL 1.1 文档解析为模型，按 QName 查找，提供服务或生成文档
   * **SOAP 信封与分发** ——1.1 和 1.2 的 Envelope 与 `soap:Fault`，分发键从 binding 推导，九条拒绝规则
 
-`UVCPP_ENABLE_WSDL` 在 `UVCPP_BUILD_WEBAPP=OFF` 时会**强制关闭** ——这个模块建在 webapp 框架之上[reference:10]。
+`UVCPP_ENABLE_WSDL` 在 `UVCPP_BUILD_WEBAPP=OFF` 时会**强制关闭** ——这个模块建在 webapp 框架之上。
 
 #### 3.5 JSON 反射（`doc/json-reflect-guide.md`）
 
-用一个宏声明字段表，在读写两个方向上共享：两层拆分、读语义、错误报告，以及 C++11 的代价[reference:11]。
+用一个宏声明字段表，在读写两个方向上共享：两层拆分、读语义、错误报告，以及 C++11 的代价。
 
 ### 四、多事件循环横向扩展
 
-一条事件循环最多只能占满一个核。`set_loops(n)` 在**同一个进程内** 起 **1 条接受者循环 + n−1 条工作循环**：接受这条路留在一个线程上，连接的 I/O 摊到各条工作循环[reference:12]。
+一条事件循环最多只能占满一个核。`set_loops(n)` 在**同一个进程内** 起 **1 条接受者循环 + n−1 条工作循环**：接受这条路留在一个线程上，连接的 I/O 摊到各条工作循环。
 
 ```cpp
 #include <webapp/uvcpp_web_app.h>
@@ -193,7 +193,7 @@ int main() {
 }
 ```
 
-打开它之前值得知道这几条[reference:13]：
+打开它之前值得知道这几条：
 
   * **在`start()` / `run()` 之前调用。** 路由注册也要在 `start()` 之前——`n > 1` 时这条从“建议”变成“必须”。
   * **`set_loops` 返回 `int`，所以不能接在 `set_host(...).set_port(...)` 这条链上。** 成功返 `0`；`n` 不在 `1..64` 内返 `UV_EINVAL`；运行时已经起来过返 `UV_EBUSY`。
@@ -220,17 +220,17 @@ int main() {
 | `UVCPP_ENABLE_NGHTTP2` | `OFF` | 启用 HTTP/2（nghttp2，静态链入）。需要 `UVCPP_ENABLE_OPENSSL=ON` 和 `UVCPP_BUILD_WEB=ON` |
 | `UVCPP_ENABLE_WSDL` | `OFF` | 启用 WSDL/SOAP 模块（pugixml，静态链入）。需要 `UVCPP_BUILD_WEBAPP=ON` |
 
-**重要提醒 ：** `UVCPP_ENABLE_ZLIB` 和 `UVCPP_ENABLE_OPENSSL` **不会** 在 `UVCPP_BUILD_WEB=ON` 时自动启用，必须显式 opt-in[reference:14]。
+**重要提醒 ：** `UVCPP_ENABLE_ZLIB` 和 `UVCPP_ENABLE_OPENSSL` **不会** 在 `UVCPP_BUILD_WEB=ON` 时自动启用，必须显式 opt-in。
 
 ### 六、每个包都带调试版动态库
 
-每份预编译包里现在**同时携带 release 和 debug 两档共享库** （`uvcppd.dll` / `libuvcppd.dll` / `libuvcppd.so`），MSVC 那份还带 `uvcppd.pdb`。方便单步进库内部排查问题。注意它**仅用于调试 ，不可再分发**——调试版 CRT 不可再分发且不包含在包内[reference:15]。
+每份预编译包里现在**同时携带 release 和 debug 两档共享库** （`uvcppd.dll` / `libuvcppd.dll` / `libuvcppd.so`），MSVC 那份还带 `uvcppd.pdb`。方便单步进库内部排查问题。注意它**仅用于调试 ，不可再分发**——调试版 CRT 不可再分发且不包含在包内。
 
 链接 debug 版用 `-luvcppd`。
 
 ### 七、文档体系与三道门禁
 
-1.2.1 起新增十二篇指南：使用者向八篇与贡献者向四篇。并且进了三道文档门禁[reference:16]：
+1.2.1 起新增十二篇指南：使用者向八篇与贡献者向四篇。并且进了三道文档门禁：
 
   * 构建系统的选项与 README 选项表双向闭合、链接/路径/锚点可解析（`check_docs.py`）
   * 22 篇文档里的 `文件:行号` 引用能解析且与内容哈希锁一致（`check_doc_lines.py`）
@@ -238,7 +238,7 @@ int main() {
 
 ### 八、PageHeap 门禁：静默的 use-after-free 检测
 
-1.4.0 引入了一个可选的测试门禁：在普通运行中，一个被释放的页仍然映射着、仍然持有旧字节——**use-after-free 是静默的** 。Full PageHeap 会立即取消映射被释放的块，把同样的读取变成访问违规[reference:17]。
+1.4.0 引入了一个可选的测试门禁：在普通运行中，一个被释放的页仍然映射着、仍然持有旧字节——**use-after-free 是静默的** 。Full PageHeap 会立即取消映射被释放的块，把同样的读取变成访问违规。
 
 它曾经在普通构建、无内存池构建和单元测试层全部绿色的情况下，抓到 **8 个 use-after-free 案例** 。
 
