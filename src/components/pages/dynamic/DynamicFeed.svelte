@@ -68,6 +68,18 @@ const pageEntries = $derived(
 	filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
 );
 
+/**
+ * 年份归属必须和卡片上显示的日期同一个时区。用 getUTCFullYear() 的话，
+ * 北京时间 1 月 1 日凌晨那几小时会被归到上一年 —— 卡片写着 2027/01/01，
+ * 却挂在「2026」的分组里。
+ */
+const yearFormatter = $derived(
+	new Intl.DateTimeFormat("en-CA", { timeZone: timezone, year: "numeric" }),
+);
+
+const entryYear = (entry: DynamicData): number =>
+	Number(yearFormatter.format(new Date(entry.published)));
+
 function pageFromUrl() {
 	return Math.max(
 		1,
@@ -88,8 +100,7 @@ function applyFilters(resetPage = true) {
 	const year = yearSelect?.value || "all";
 	filtered = entries.filter(
 		(entry) =>
-			(year === "all" ||
-				String(new Date(entry.published).getUTCFullYear()) === year) &&
+			(year === "all" || String(entryYear(entry)) === year) &&
 			(!query || entry.searchText.includes(query)),
 	);
 	if (resetPage) currentPage = 1;
@@ -105,11 +116,7 @@ function populateYears() {
 	all.value = "all";
 	all.textContent = allYearsText;
 	yearSelect.append(all);
-	const years = [
-		...new Set(
-			entries.map((entry) => new Date(entry.published).getUTCFullYear()),
-		),
-	];
+	const years = [...new Set(entries.map(entryYear))];
 	for (const year of years) {
 		const option = document.createElement("option");
 		option.value = String(year);
@@ -128,7 +135,7 @@ function createItem(entry: DynamicData) {
 	permalinkUrl.hash = anchorId;
 	const permalink = `${permalinkUrl.pathname}${permalinkUrl.search}${permalinkUrl.hash}`;
 	root.id = anchorId;
-	root.dataset.year = String(new Date(entry.published).getUTCFullYear());
+	root.dataset.year = String(entryYear(entry));
 
 	const author = root.querySelector<HTMLElement>("[data-dynamic-author]");
 	if (author) {
@@ -171,7 +178,9 @@ function createItem(entry: DynamicData) {
 			time.textContent = new Intl.DateTimeFormat(
 				document.documentElement.lang || undefined,
 				{
-					timeZone: "UTC",
+					// 用的必须是同一个时区：下面拼的偏移量标签来自 timezone，
+					// 这里若写死 UTC，显示出来的就是 UTC 墙上时间配 UTC+8 的标签。
+					timeZone: timezone,
 					year: "numeric",
 					month: "2-digit",
 					day: "2-digit",
