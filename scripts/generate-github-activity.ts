@@ -5,7 +5,8 @@
 //
 // 1. 产物要提交进仓库。抓取失败时保留上一次的结果，构建不会因此断掉。
 // 2. 仓库列表走 /users/{user}/repos —— 这个接口只返回**公开仓库**，所以私有仓库
-//    是结构性排除的，不需要（也不应该）维护一份黑名单。
+//    是结构性排除的，不需要（也不应该）为了保密维护黑名单。config 里的 excludeRepos
+//    解决的是另一件事：公开、但不想让活动上首页的仓库。
 // 3. 提交标题是外部文本，拼进 markdown 前必须转义，否则一个 * 或 [ 就能把整页排版搞乱。
 // 4. 动态页用的是不带任何插件的裸 markdown 处理器，所以这里只能用
 //    粗体 / 链接 / 列表，不能用 ::github{}、callout、mermaid 那些。
@@ -118,14 +119,17 @@ async function githubJson<T>(url: string): Promise<T> {
 
 /** 按 pushed_at 倒序的公开仓库；窗口内没有推送的直接跳过，省下请求。 */
 async function listActiveRepos(since: Date): Promise<GithubRepo[]> {
-	const { user, includeForks } = githubActivityConfig;
+	const { user, includeForks, excludeRepos } = githubActivityConfig;
 	const repos = await githubJson<GithubRepo[]>(
 		`${API_ROOT}/users/${encodeURIComponent(user)}/repos?type=owner&sort=pushed&per_page=100`,
 	);
 	if (!Array.isArray(repos)) throw new Error("仓库列表返回了非数组");
 
+	const excluded = new Set(excludeRepos.map((name) => name.toLowerCase()));
+
 	return repos.filter((repo) => {
 		if (repo.archived || repo.disabled) return false;
+		if (excluded.has(repo.full_name.toLowerCase())) return false;
 		if (repo.fork && !includeForks) return false;
 		if (!repo.pushed_at) return false;
 		return new Date(repo.pushed_at).getTime() >= since.getTime();

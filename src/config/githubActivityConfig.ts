@@ -30,4 +30,14 @@ export const githubActivityConfig: GithubActivityConfig = {
 	// 而且那边有真实提交。提交按 author 过滤，只会出现自己的提交，
 	// 上游别人的活动不会被算进来；纯镜像 fork 自然产出 0 条。
 	includeForks: true,
+
+	// 本站仓库本身不参与同步。
+	//
+	// 它原本是私有的，私有仓库被 /users/{user}/repos 结构性排除，自然就不会出现；
+	// 2026-10-16 转公开之后就落进列表里了。提交记录本身已经公开，所以这不再是
+	// 保密问题，纯粹是取舍：站点的提交（改配置、清缓存、调样式）摆在动态页上
+	// 读起来像自言自语。
+	//
+	// 想让它们出现就把这项清空——没有任何其他连带影响。
+	excludeRepos: ["antruly/antruly-blog"],
 };
