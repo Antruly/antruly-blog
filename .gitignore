@@ -36,6 +36,10 @@ yarn.lock
 # docs
 Firefly-docs/
 
+# DNS 区文件：里面有 frp / RustDesk 的命名和真实服务器地址，
+# 是内网拓扑的描述，不应该跟着公开仓库一起发出去。留在本地即可。
+docs/dns/
+
 # lite 版本
 Firefly-Lite/
 
