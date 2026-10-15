@@ -36,8 +36,14 @@ jobs:
 
       # 必须跑完整流水线：LQIP 占位图、字体子集、Pagefind 索引都挂在这条链上，
       # 只跑 astro build 会缺东西。
+      #
+      # GITHUB_TOKEN 是 Actions 自动注入的内置 secret，不需要额外配置；它只在这台
+      # runner 的构建进程里可见，不会进产物。流水线里的两条 GitHub 抓取
+      # （项目卡片数据、活动同步）没有它就会退化成匿名调用，撞上 60 次/小时的限额。
       - name: Build site
         run: pnpm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # 需要在仓库 Settings → Secrets and variables → Actions 里配置：
       #   CLOUDFLARE_API_TOKEN   —— 权限至少要有 Workers Scripts:Edit
