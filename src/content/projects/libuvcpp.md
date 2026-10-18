@@ -2,7 +2,9 @@
 title: "libuvcpp"
 published: 2026-01-27
 draft: false
-order: 100
+# 置顶三件套之一：libuvcpp(130) → uvp(120) → uvp-templates(110)。
+# order 降序排列，这一档刻意与其余项目（最高 95）拉开距离。
+order: 130
 description: "在保留 libuv 高性能与原有语义的前提下，把 libuv 的基础类型系统化封装成对应的 C++ 类，并扩展了内存池、Net、Web、SSL 等模块。"
 image: "images/libuvcpp.webp"
 status: "published"

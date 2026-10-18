@@ -2,7 +2,8 @@
 title: "uvp"
 published: 2026-10-15
 draft: false
-order: 70
+# 置顶三件套之一，见 libuvcpp.md 的说明
+order: 120
 description: "libuvcpp 的配套工具链：一个 CLI 加一个 MCP server，让你从终端或 AI agent 里构建、运行、验证 libuvcpp 驱动的 C++ Web 服务。"
 image: "images/uvp.webp"
 status: "developing"

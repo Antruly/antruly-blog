@@ -59,6 +59,12 @@
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
 		"license": "MIT"
 	},
+	"antruly/uvp-templates": {
+		"description": "The official uvp template registry: standard uvp.template/1 packages, a deterministic index, and reviewable, checked submissions.",
+		"language": "JavaScript",
+		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
+		"license": "MIT"
+	},
 	"antruly/vlibuv": {
 		"description": "libuv 的c++ 扩展库",
 		"language": "C++",
