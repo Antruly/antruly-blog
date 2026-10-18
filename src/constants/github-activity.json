@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-10-18T15:08:34.927Z",
+	"generatedAt": "2026-10-18T15:49:44.298Z",
 	"entries": [
 		{
 			"id": "antruly/uvp@2026-10-18",
 			"repo": "Antruly/uvp",
-			"published": 1792334121000,
-			"commitCount": 71,
-			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 71 次提交\n\n- Merge pull request #198 from Antruly/ci/197-github-packages-mirror\n- ci(release): bootstrap GitHub Packages for pre-helper tags\n- Merge pull request #200 from Antruly/fix/199-github-packages-bootstrap\n- fix(release): check the version from the staged helpers on a bootstrap tag\n- Merge pull request #202 from Antruly/ci/201-bootstrap-verify-root\n- ci(release): keep the prepare lifecycle out of pack JSON\n- …等 71 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
+			"published": 1792338105000,
+			"commitCount": 74,
+			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 74 次提交\n\n- Merge pull request #198 from Antruly/ci/197-github-packages-mirror\n- ci(release): bootstrap GitHub Packages for pre-helper tags\n- Merge pull request #200 from Antruly/fix/199-github-packages-bootstrap\n- fix(release): check the version from the staged helpers on a bootstrap tag\n- Merge pull request #202 from Antruly/ci/201-bootstrap-verify-root\n- ci(release): keep the prepare lifecycle out of pack JSON\n- …等 74 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
 		},
 		{
 			"id": "antruly/uvp-templates@2026-10-18",
@@ -26,8 +26,8 @@
 			"id": "antruly/uvp@2026-10-17",
 			"repo": "Antruly/uvp",
 			"published": 1792249090000,
-			"commitCount": 129,
-			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 129 次提交\n\n- fix(mutation): restore the mutated file when SIGHUP ends the run\n- fix(ci): read the duplication threshold from its config, and refuse an unreadab…\n- fix(workspace): refuse names CMake cannot use as a target\n- fix(web): report a frame the probe refused instead of treating it as a short re…\n- docs: record the Windows C++ lane and its first-run findings\n- fix(capture): refuse to replay a request body the capture cut short\n- …等 129 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
+			"commitCount": 126,
+			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 126 次提交\n\n- fix(mutation): restore the mutated file when SIGHUP ends the run\n- fix(ci): read the duplication threshold from its config, and refuse an unreadab…\n- fix(workspace): refuse names CMake cannot use as a target\n- fix(web): report a frame the probe refused instead of treating it as a short re…\n- fix(doctor): keep a header probe that could not look undetermined\n- Merge pull request #82 from Antruly/fix/80-cmake-prefix-path-entries\n- …等 126 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
 		},
 		{
 			"id": "antruly/libuvcpp@2026-10-17",
