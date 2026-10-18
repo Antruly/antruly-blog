@@ -42,7 +42,7 @@
 		"license": "NOASSERTION"
 	},
 	"antruly/libuvcpp": {
-		"description": "libuvcpp 的核心目标是：在保留 libuv 高性能与原有语义的前提下，提高 C++ 环境下的开发效率。它将 libuv 的基本类型系统化封装为对应的 C++ 类，并把相关方法归并到合适的类中，使接口更符合 C++ 使用习惯，日常开发更便捷，代码可读性更高。在此基础上，libuvcpp 还扩展了内存池、Net、Web、SSL 等模块，提供主流开发中常用的工具服务，帮助开发者快速构建和开发项目。",
+		"description": "libuvcpp systematically wraps libuv's types and methods into idiomatic C++ classes to boost development efficiency while preserving libuv's high performance and semantics. It also adds memory pool, Net, Web, and SSL modules for rapid project development.",
 		"language": "C++",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
 		"license": "MIT"

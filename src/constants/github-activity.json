@@ -1,33 +1,54 @@
 {
-	"generatedAt": "2026-10-15T22:48:41.446Z",
+	"generatedAt": "2026-10-18T15:08:34.927Z",
 	"entries": [
 		{
-			"id": "antruly/uvp@2026-10-16",
+			"id": "antruly/uvp@2026-10-18",
 			"repo": "Antruly/uvp",
-			"published": 1792103385000,
-			"commitCount": 31,
-			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 31 次提交\n\n- fix(ci): let every matching rule select its lanes, and check the table\n- feat(http3): ask over HTTP/3, and generate a service that answers it\n- feat(db): back rest-api with libuvcpp's pool when the db module is declared\n- fix(ci): carry the optional binding the lock file was missing\n- fix(ci): give the real-libuvcpp lane a libuvcpp that can build what it tests\n- fix(tests): take test ports from below the ephemeral range\n- …等 31 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
+			"published": 1792334121000,
+			"commitCount": 71,
+			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 71 次提交\n\n- Merge pull request #198 from Antruly/ci/197-github-packages-mirror\n- ci(release): bootstrap GitHub Packages for pre-helper tags\n- Merge pull request #200 from Antruly/fix/199-github-packages-bootstrap\n- fix(release): check the version from the staged helpers on a bootstrap tag\n- Merge pull request #202 from Antruly/ci/201-bootstrap-verify-root\n- ci(release): keep the prepare lifecycle out of pack JSON\n- …等 71 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
+		},
+		{
+			"id": "antruly/uvp-templates@2026-10-18",
+			"repo": "Antruly/uvp-templates",
+			"published": 1792326417000,
+			"commitCount": 4,
+			"markdown": "**[uvp-templates](https://github.com/Antruly/uvp-templates)** · 4 次提交\n\n- chore: bootstrap the uvp template registry\n- docs: record the observed 0.2.0 client and include stderr in the help probe\n- fix(policy): accept a Markdown list marker on the disclosure lines\n- Merge pull request #1 from Antruly/docs/bootstrap-evidence\n\n[查看提交记录 →](https://github.com/Antruly/uvp-templates/commits)"
+		},
+		{
+			"id": "antruly/libuvcpp@2026-10-18",
+			"repo": "Antruly/libuvcpp",
+			"published": 1792324050000,
+			"commitCount": 20,
+			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 20 次提交\n\n- feat(packaging): .deb / .rpm / Windows 安装程序与自建 apt/dnf 仓库（1.7.3-dev）\n- fix(build): 系统 libuv 的接口链接按树内/导出分开 —— 修 macOS CI 十一个共享库格子（1.7.3-dev）\n- version(1.7.4): 发布态 —— 1.7.0 之后的补丁版，带发行版包与两条包管理通道\n- fix(ci): 包树的 libssl-dev 断言改看 apt 声明依赖 —— v1.7.4 两条 Linux 腿的假红（1.7.4）\n- fix(grpc): 按 libuv 1.49 之前的编码补 UV\\_ENODATA 兜底（1.7.4）\n- fix(ci): 安装程序那一步把 .iss 当位置参数交给 ISCC —— v1.7.4 msvc 两个格子的红（1.7.4）\n- …等 20 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
+		},
+		{
+			"id": "antruly/uvp@2026-10-17",
+			"repo": "Antruly/uvp",
+			"published": 1792249090000,
+			"commitCount": 129,
+			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 129 次提交\n\n- fix(mutation): restore the mutated file when SIGHUP ends the run\n- fix(ci): read the duplication threshold from its config, and refuse an unreadab…\n- fix(workspace): refuse names CMake cannot use as a target\n- fix(web): report a frame the probe refused instead of treating it as a short re…\n- docs: record the Windows C++ lane and its first-run findings\n- fix(capture): refuse to replay a request body the capture cut short\n- …等 129 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
+		},
+		{
+			"id": "antruly/libuvcpp@2026-10-17",
+			"repo": "Antruly/libuvcpp",
+			"published": 1792242737000,
+			"commitCount": 12,
+			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 12 次提交\n\n- Merge remote-tracking branch 'origin/master' into feature/db-odbc\n- fix(ci): Linux 两条发布腿的 ODBC 头判据改成\"编一次\"，不再要求 unixodbc.h 存在（1.7.2-dev）\n- fix(db): ODBC 后端在 mingw 上编不过 —— unixODBC 补的 WCHAR 与 winnt.h 硬冲突（1.7.2-dev）\n- fix(test): 静态腿的 memo\\_reset 量具落在 \\_\\_linux\\_\\_ 守卫之外 —— macOS / MSVC / MinGW 十四条腿全红\n- Merge remote-tracking branch 'origin/master' into feature/db-odbc\n- Merge pull request #36 from Antruly/feature/db-odbc\n- …等 12 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
 		},
 		{
 			"id": "antruly/libuvcpp@2026-10-16",
 			"repo": "Antruly/libuvcpp",
-			"published": 1792103378000,
-			"commitCount": 4,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 4 次提交\n\n- perf(webapp): resp.json() 的应答体不再多拷一遍 —— 每应答 −1.0000 次 memcpy / −8 397 字节（1.7.2-…\n- docs(benchmark): 第六轮平台读数（2026-10-15T17:03Z，42 档，pin 02ae418）\n- perf(web): brotli 编码器状态要的内存改从线程本地竞技场里发 —— br 每请求 −23% CPU、缺页 72 → 0（1.7.2-dev）\n- perf(webapp): 静态腿 LOOP\\_STAT 档的解析记忆与缓存比对改走\\*\\*每条循环的前台副本\\*\\* —— 每请求取锁 2.03 → 0.03 次、持…\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
+			"published": 1792164462000,
+			"commitCount": 17,
+			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 17 次提交\n\n- perf(webapp): resp.json() 的应答体不再多拷一遍 —— 每应答 −1.0000 次 memcpy / −8 397 字节（1.7.2-…\n- docs(benchmark): 第六轮平台读数（2026-10-15T17:03Z，42 档，pin 02ae418）\n- perf(web): brotli 编码器状态要的内存改从线程本地竞技场里发 —— br 每请求 −23% CPU、缺页 72 → 0（1.7.2-dev）\n- perf(webapp): 静态腿 LOOP\\_STAT 档的解析记忆与缓存比对改走\\*\\*每条循环的前台副本\\*\\* —— 每请求取锁 2.03 → 0.03 次、持…\n- Merge master（1.7.2-dev）进 feature/db-odbc\n- build(db): 六条打包腿显式开 ODBC 并断言宏（1.7.2-dev）\n- …等 17 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
 		},
 		{
 			"id": "antruly/libuvcpp@2026-10-15",
 			"repo": "Antruly/libuvcpp",
 			"published": 1792079203000,
-			"commitCount": 7,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 7 次提交\n\n- perf(webapp): 路径归一化收敛成一个函数，并给它加「什么都不用做」的快路（1.7.1-dev）\n- perf(db): 结果集物化那条路上的分配账 —— 每应答 204.78 → 102.77 次分配（1.7.2-dev）\n- perf(db): 没装日志回调时不再构造那一行日志 —— 每应答 −3.96 次分配（1.7.2-dev）\n- perf(quic): 一个数据报装多条流 —— sendmsg 从 1.03 次/请求降到 0.05（1.7.2-dev）\n- perf(quic): 发送队列每块的容量按「这次要写多少」定 —— h3 每请求分配字节 −89.6%（1.7.2-dev）\n- docs(benchmark): 第五轮平台读数（2026-10-15，42 档，pin 8150720）\n- …等 7 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
-		},
-		{
-			"id": "antruly/uvp@2026-10-15",
-			"repo": "Antruly/uvp",
-			"published": 1792078965000,
-			"commitCount": 28,
-			"markdown": "**[uvp](https://github.com/Antruly/uvp)** · 28 次提交\n\n- chore: import the uvp framework\n- fix: close the gaps the static gates were failing on\n- chore: keep dev.md out of the repository\n- chore: publish under Antruly/uvp, not a namespace that does not exist\n- chore: add the three development scripts AGENTS.md already documents\n- fix: correct the defects the built test lanes surfaced\n- …等 28 次提交\n\n[查看提交记录 →](https://github.com/Antruly/uvp/commits)"
+			"commitCount": 11,
+			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 11 次提交\n\n- perf(webapp): 路径归一化收敛成一个函数，并给它加「什么都不用做」的快路（1.7.1-dev）\n- perf(db): 结果集物化那条路上的分配账 —— 每应答 204.78 → 102.77 次分配（1.7.2-dev）\n- perf(db): 没装日志回调时不再构造那一行日志 —— 每应答 −3.96 次分配（1.7.2-dev）\n- feat(db): ODBC 后端 —— 第四个后端，对着的是接口而不是某一种库（1.7.1-dev）\n- fix(db): ODBC 按实测改六处，并把它接进共用套件（1.7.1-dev）\n- perf(quic): 一个数据报装多条流 —— sendmsg 从 1.03 次/请求降到 0.05（1.7.2-dev）\n- …等 11 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
 		},
 		{
 			"id": "antruly/libuvcpp@2026-10-14",
@@ -89,36 +110,8 @@
 			"id": "antruly/libuvcpp@2026-10-05",
 			"repo": "Antruly/libuvcpp",
 			"published": 1791175473000,
-			"commitCount": 8,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 8 次提交\n\n- ci(release): arm64 腿三处钉 v143 —— 判据从「生成器名」改成「缓存里落下的工具集」\n- fix(capi): quic 端点带着活连接释放 —— 边遍历 conns 边 detach（SIGSEGV）\n- feat(bindings): C# P/Invoke 绑定（321 条）+ 一个 QUIC 回显例子\n- ci(release): 1.5.0 起六条腿的发布包都是全功能的（QUIC + HTTP3 + C API）\n- release: 1.5.0 —— 发布包全功能（QUIC + HTTP3 + C ABI）、C# 绑定\n- 文档：三处「发布包里 QUIC/HTTP3 是关的」已经不成立（1.5.0 起发布包全功能）\n- …等 8 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
-		},
-		{
-			"id": "antruly/libuvcpp@2026-10-04",
-			"repo": "Antruly/libuvcpp",
-			"published": 1791082796000,
 			"commitCount": 3,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 3 次提交\n\n- 文档：capi-guide 两处过期的自述（§4 那格把 \\`h3\\_version\\` 记成了连接的 \\`version\\`，§7 有一条重复的 UDP）\n- 1\\.4.4-dev：check\\_config\\_contract.py 加第四条判据（从包外面量 C 面），并把 CI 的 mingw64 尾与 release…\n- ci: 重跑 2c4405e —— test\\_web\\_multiloop\\_func 的间歇性（Linux ssl 腿 SEGFAULT）\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
-		},
-		{
-			"id": "antruly/libuvcpp@2026-09-30",
-			"repo": "Antruly/libuvcpp",
-			"published": 1790758923000,
-			"commitCount": 24,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 24 次提交\n\n- 1\\.4.x Q4a：QUIC 传输前两步落地 —— 握手真通，流真收发（骨架变链路协议）\n- 1\\.4.x Q4b：QUIC 传输第三步 —— 关闭与空闲超时，把两条收场路都量出来\n- 1\\.4.x Q4c：QUIC 传输收尾 —— 文档与门禁跟上，\"骨架\"那句话从每一处摘干净\n- 1\\.4.x Q4d：§4 那张表自己审一遍 —— 两格\"判据在哪\"指不到东西，改成如实写\n- 1\\.4.x Q4e：把 Q4a 弄丢的 BOM 补回去 —— 这一条是 CI 上 \\`config-contract\\` 红的全部\n- 1\\.4.1 Q5a：QUIC 公开面补三样 HTTP/3 要用的东西 —— 判据是\"变异了必须红\"\n- …等 24 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
-		},
-		{
-			"id": "antruly/libuvcpp@2026-09-29",
-			"repo": "Antruly/libuvcpp",
-			"published": 1790656637000,
-			"commitCount": 7,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 7 次提交\n\n- 1\\.4.x Q1：QUIC 传输层骨架（net 层，ngtcp2 后端）+ 构建契约；版本升 1.4.1-dev\n- 1\\.4.x Q2：修 doc-snippets 门禁在发布包上永久退 3（CI 的 config-contract 红）+ QUIC 契约用例\n- 1\\.4.x Q3：CI 拆成四个平台文件（文件内按功能分格）+ 补 macOS/MSVC 的 QUIC 腿 + 新门禁\n- 1\\.4.x Q3b：修 macOS quic 腿自检的假红（nm -gU → nm -g，证据折进注解）+ 分支保护旧→新名逐条对照\n- 1\\.4.x Q3c：macOS 那步 OpenSSL 自检退成纯提示（它不该比它所服务的门禁更容易红）+ 门禁 ② 把配置期的原话折进注解\n- 1\\.4.x Q3d：doc/ci-guide.md §5 跟上 Q3b/Q3c —— macOS 那步自检是\\*\\*纯诊断\\*\\*，判据在门禁 ②\n- …等 7 次提交\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
-		},
-		{
-			"id": "antruly/libuvcpp@2026-09-26",
-			"repo": "Antruly/libuvcpp",
-			"published": 1790423458000,
-			"commitCount": 2,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 2 次提交\n\n- 1\\.3.x L1：日志模块完善（LOGF、重载集、flush、SOAP/WSDL）；修启动钩子抛异常时属主句柄不回收；版本升 1.3.33-dev\n- release: 1.4.0 —— 1.3.x 收口（1.3.1 → 1.3.33）\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
+			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 3 次提交\n\n- 文档：三处「发布包里 QUIC/HTTP3 是关的」已经不成立（1.5.0 起发布包全功能）\n- docs(bindings): C# 例子那段实测输出换成 1.5.0 真跑出来的（并说明 on\\_close 两行的意义）\n- feat(package): 发布包里带上 bindings/csharp/ —— C# 侧要的两份声明跟着二进制一起发\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
 		},
 		{
 			"id": "antruly/fms-service@2026-09-26",
@@ -126,20 +119,6 @@
 			"published": 1790369363000,
 			"commitCount": 1,
 			"markdown": "**[FMS-Service](https://github.com/Antruly/FMS-Service)** · 1 次提交\n\n- Merge pull request #1 from sercebr/master\n\n[查看提交记录 →](https://github.com/Antruly/FMS-Service/commits)"
-		},
-		{
-			"id": "antruly/libuvcpp@2026-09-25",
-			"repo": "Antruly/libuvcpp",
-			"published": 1790276678000,
-			"commitCount": 2,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 2 次提交\n\n- fix(wsdl): Windows 动态库下一个 SOAP 符号都不导出 —— 四个公共头补上 UVCPP\\_API\n- Merge PR #33: fix(wsdl): Windows 动态库下一个 SOAP 符号都不导出 —— 四个公共头补上 UVCPP\\_API\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
-		},
-		{
-			"id": "antruly/libuvcpp@2026-09-23",
-			"repo": "Antruly/libuvcpp",
-			"published": 1790153461000,
-			"commitCount": 6,
-			"markdown": "**[libuvcpp](https://github.com/Antruly/libuvcpp)** · 6 次提交\n\n- http2: 修两处够不着的潜伏缺陷 —— send\\_data 返回码契约 + flush 丢帧\n- ssl: PEER\\_STRICT 真的校验主机名（客户端）—— 1.2.24-dev\n- net: 补上 tcp\\_client 里两处调用漏掉的 OpenSSL 守卫（修 CI 全表红）\n- docs: 多进程设计稿的样例改成接返回码（\\`set\\_worker\\_processes\\` 返 \\`int\\`）\n- http2: 流级背压 —— pause/resume 与出站上界（1.2.25-dev）\n- release: 1.3.0 —— 1.2.x 收口（1.2.1 → 1.2.25）\n\n[查看提交记录 →](https://github.com/Antruly/libuvcpp/commits)"
 		},
 		{
 			"id": "antruly/fsrec@2026-09-12",
