@@ -142,11 +142,16 @@ const visibleTags = tags || [];
             {link.map((r, i) => {
               const resolvedIcon = resolveLinkIcon(r.icon, r.label);
               const isFirst = i === 0;
+              // star 按钮交给浏览器端刷新，规则与项目卡片一致
+              const isStar = typeof r.repo === "string";
               return (
                 <a
                   href={r.value}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-project-star={isStar ? "" : undefined}
+                  data-repo={isStar ? r.repo : undefined}
+                  style={isStar && (r.stars ?? 0) <= 0 ? "display:none" : undefined}
                   class:list={[
                     "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
                     isFirst
@@ -167,7 +172,7 @@ const visibleTags = tags || [];
                   {resolvedIcon.kind === "letter" && (
                     <span class="text-sm font-bold">{resolvedIcon.value}</span>
                   )}
-                  {r.label}
+                  {isStar ? <span data-star-count>{r.label}</span> : r.label}
                 </a>
               );
             })}
@@ -205,3 +210,9 @@ const visibleTags = tags || [];
     </div>
   </div>
 </MainGridLayout>
+
+<script>
+  // 详情页也有 star 按钮，和列表页共用同一份缓存（一次请求）。
+  import { initProjectStars } from "@/utils/project-stars-client";
+  initProjectStars();
+</script>

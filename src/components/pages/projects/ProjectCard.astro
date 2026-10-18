@@ -145,11 +145,17 @@ const coverClass = gridCoverFullWidth
     <div class="mt-auto pt-4 flex flex-wrap items-center gap-2">
         {links.map((r) => {
           const resolvedIcon = resolveLinkIcon(r.icon, r.label);
+          // star 按钮交给浏览器端刷新：data-repo 供一次性的全表请求回填，
+          // 构建期数量为 0 时先隐藏，拿到新数据后由脚本决定显示与否。
+          const isStar = typeof r.repo === "string";
           return (
             <a
               href={r.value}
               target="_blank"
               rel="noopener noreferrer"
+              data-project-star={isStar ? "" : undefined}
+              data-repo={isStar ? r.repo : undefined}
+              style={isStar && (r.stars ?? 0) <= 0 ? "display:none" : undefined}
               class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg bg-(--primary)/10 text-(--primary) hover:bg-(--primary)/20 transition-colors"
             >
               {resolvedIcon.kind === "icon" && (
@@ -167,7 +173,11 @@ const coverClass = gridCoverFullWidth
               {resolvedIcon.kind === "letter" && (
                 <span class="text-sm font-bold">{resolvedIcon.value}</span>
               )}
-              {r.label}
+              {isStar ? (
+                <span data-star-count>{r.label}</span>
+              ) : (
+                r.label
+              )}
             </a>
           );
         })}
@@ -181,3 +191,10 @@ const coverClass = gridCoverFullWidth
       </div>
   </div>
 </div>
+
+<script>
+  // 卡片可能出现很多次，但 initProjectStars 自带「只初始化一次」的守卫，
+  // 切页后由 astro:page-load 用缓存重新写值，不再发请求。
+  import { initProjectStars } from "@/utils/project-stars-client";
+  initProjectStars();
+</script>
