@@ -3,72 +3,84 @@
 		"description": "把 Windows 桌面变成一台标准 ONVIF Profile S 网络摄像机。DeskCamera（闭源收费）的开源替代：多通道、主/子双码流、音频、OSD、Vue 控制台，无需硬件编码器。",
 		"language": "C++",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "NOASSERTION"
+		"license": "NOASSERTION",
+		"stars": 2
 	},
 	"antruly/fms-service": {
 		"description": "FMS (FileService) 是一个**自托管的文件管理服务**，提供端到端加密、文件分享、WebDAV 访问和 Android App。",
 		"language": "JavaScript",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 1
 	},
 	"antruly/fms-service-app": {
 		"description": "FMS (FileService) 是一个**自托管的文件管理服务**，提供端到端加密、文件分享、WebDAV 访问和 Android App。",
 		"language": "Java",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 1
 	},
 	"antruly/fsrec": {
 		"description": "fsrec 是一款面向 Windows 的数据恢复工具，支持 NTFS / FAT12 / FAT16 / FAT32 / exFAT 文件系统。 它不依赖任何第三方恢复引擎，而是直接从文件系统底层数据结构出发——解析引导扇区（BPB）、NTFS 主文件表（$MFT）、FAT 目录项与数据运行（Data Run），在内存中重建完整的目录树。你可以像浏览 普通文件一样浏览那些已被删除、被清空回收站，甚至在分区被误格式化后仍残留在磁盘上的文件， 并按原目录结构把它们恢复到另一块磁盘",
 		"language": "C++",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 2
 	},
 	"antruly/http11probe": {
 		"description": "An open testing platform that probes HTTP/1.1 servers against RFC 9110/9112 requirements, smuggling vectors, and malformed input handling. Add your framework, get compliance results automatically.",
 		"language": null,
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 0
 	},
 	"antruly/httparena": {
 		"description": "The most complete HTTP open source benchmarking platform. Don't just say you're fast, prove it.",
 		"language": "C#",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 0
 	},
 	"antruly/image_compress": {
 		"description": "ImageCompress is a lightweight C++ library for compressing and converting images. It supports JPEG, PNG, BMP formats and provides easy-to-use interfaces for memory and file operations.",
 		"language": "C++",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "NOASSERTION"
+		"license": "NOASSERTION",
+		"stars": 1
 	},
 	"antruly/libuvcpp": {
 		"description": "libuvcpp systematically wraps libuv's types and methods into idiomatic C++ classes to boost development efficiency while preserving libuv's high performance and semantics. It also adds memory pool, Net, Web, and SSL modules for rapid project development.",
 		"language": "C++",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 16
 	},
 	"antruly/mysqlsyncmonitor": {
 		"description": "mysql 主备服务检查工具，断开或出现同步异常预警等功能",
 		"language": "C",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 0
 	},
 	"antruly/uvp": {
 		"description": "Build, run, and verify libuvcpp-powered C++ web services from your terminal or agent with one CLI and MCP server.",
 		"language": "TypeScript",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 2
 	},
 	"antruly/uvp-templates": {
 		"description": "The official uvp template registry: standard uvp.template/1 packages, a deterministic index, and reviewable, checked submissions.",
 		"language": "JavaScript",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 0
 	},
 	"antruly/vlibuv": {
 		"description": "libuv 的c++ 扩展库",
 		"language": "C++",
 		"avatarUrl": "https://avatars.githubusercontent.com/u/61441059?v=4",
-		"license": "MIT"
+		"license": "MIT",
+		"stars": 7
 	}
 }

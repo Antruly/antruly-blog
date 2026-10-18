@@ -9,6 +9,7 @@ import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { getSortedProjects } from "@/utils/content-utils";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import { withStarLink } from "@/utils/project-links";
 import {
 	getProjectStatusMeta,
 	resolveLinkIcon,
@@ -37,7 +38,10 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 
-const { title, description, published, tags, link, status } = entry.data;
+const { title, description, published, tags, status } = entry.data;
+
+// star 按钮由构建期抓到的数据生成，frontmatter 里不用再写 ★ N
+const link = withStarLink(entry.data.link);
 
 // OG 元数据用绝对 URL；页面内封面由 <CoverImage> 用原始 src + basePath 解析（同文章页）
 const coverOg = await resolveProjectImageAbsolute(

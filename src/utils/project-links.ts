@@ -1,0 +1,68 @@
+// 项目卡片 / 详情页的外链按钮。
+//
+// star 数是「会变的数据」，不该手写在 frontmatter 里——写死之后只会越来越旧
+// （libuvcpp 从 13 涨到 16 就是这么发现的）。这里统一从构建期抓到的
+// github-card-data.json 取数，frontmatter 只描述「有哪些链接」。
+//
+// 数据来自 scripts/generate-github-card-data.ts，每次构建刷新；
+// 那个脚本按内容里的 ::github{repo="..."} 发现仓库，所以项目页需要保留这个指令。
+
+import githubCardData from "@constants/github-card-data.json";
+
+export interface ProjectLink {
+	label: string;
+	icon: string;
+	value: string;
+}
+
+interface GithubCardRecord {
+	stars?: number | null;
+}
+
+/** github.com/owner/repo 形式的地址 */
+const GITHUB_REPO_PATTERN =
+	/^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/?#]+)/i;
+
+/** 手写的 star 条目，形如「★ 16」 */
+const STAR_LABEL_PATTERN = /^★/;
+
+const CARD_DATA = githubCardData as Record<string, GithubCardRecord>;
+
+/**
+ * 补上 star 按钮。
+ *
+ * 规则：先丢掉所有手写的 ★ 条目（避免和自动生成的那条重复、也避免旧数字残留），
+ * 再从卡片数据里按仓库取 stargazers 数量追加一条。数量为 0、取不到、或者这个
+ * 项目根本没有 GitHub 链接时，不追加——不显示「★ 0」。
+ */
+export function withStarLink(links: ProjectLink[]): ProjectLink[] {
+	const base = links.filter(
+		(link) => !STAR_LABEL_PATTERN.test(link.label.trim()),
+	);
+
+	let repo: { key: string; url: string } | null = null;
+	for (const link of base) {
+		const match = link.value.match(GITHUB_REPO_PATTERN);
+		if (!match) continue;
+		const owner = match[1];
+		const name = match[2].replace(/\.git$/i, "");
+		repo = {
+			key: `${owner}/${name}`.toLowerCase(),
+			url: `https://github.com/${owner}/${name}`,
+		};
+		break;
+	}
+	if (!repo) return base;
+
+	const stars = CARD_DATA[repo.key]?.stars;
+	if (typeof stars !== "number" || stars <= 0) return base;
+
+	return [
+		...base,
+		{
+			label: `★ ${stars}`,
+			icon: "material-symbols:star",
+			value: `${repo.url}/stargazers`,
+		},
+	];
+}

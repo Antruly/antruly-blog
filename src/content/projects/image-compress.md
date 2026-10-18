@@ -11,9 +11,6 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/image_compress"
-  - label: "★ 1"
-    icon: "material-symbols:star"
-    value: "https://github.com/Antruly/image_compress/stargazers"
 ---
 
 一个不打算做大的图像库：**压缩和格式转换**，就做这两件事。

@@ -11,9 +11,6 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/Desk2ONVIF"
-  - label: "★ 2"
-    icon: "material-symbols:star"
-    value: "https://github.com/Antruly/Desk2ONVIF/stargazers"
 ---
 
 把一台普通 Windows 机器的桌面画面，伪装成一台**符合 ONVIF Profile S 标准的网络摄像机**——任何支持 ONVIF 的 NVR、录像机或监控客户端都能像添加一台真实 IPC 那样把它加进来。

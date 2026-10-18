@@ -13,6 +13,11 @@ interface GithubCardData {
 	language: string | null;
 	avatarUrl: string | null;
 	license: string | null;
+	/**
+	 * star 数。项目卡片的 ★ 按钮从这里取，不再手写在 frontmatter 里——
+	 * 手写的数字只会越来越旧。0 或取不到时卡片不显示 ★。
+	 */
+	stars: number | null;
 }
 
 type GithubCardCache = Record<string, GithubCardData>;
@@ -75,6 +80,8 @@ async function fetchRepositoryData(repo: string): Promise<GithubCardData> {
 			typeof data.owner?.avatar_url === "string" ? data.owner.avatar_url : null,
 		license:
 			typeof data.license?.spdx_id === "string" ? data.license.spdx_id : null,
+		stars:
+			typeof data.stargazers_count === "number" ? data.stargazers_count : null,
 	};
 }
 

@@ -11,9 +11,6 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/FMS-Service-app"
-  - label: "★ 1"
-    icon: "material-symbols:star"
-    value: "https://github.com/Antruly/FMS-Service-app/stargazers"
 ---
 
 [FMS-Service](/projects/fms-service/) 的配套 Android 客户端。

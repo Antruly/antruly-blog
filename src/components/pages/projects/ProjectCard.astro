@@ -5,6 +5,7 @@ import { siteConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import { withStarLink } from "@/utils/project-links";
 import { getProjectStatusMeta, resolveLinkIcon } from "@/utils/projects-utils";
 import { url } from "@/utils/url-utils";
 
@@ -33,6 +34,9 @@ const {
 } = Astro.props;
 
 const detailUrl = url(`/projects/${id}/`);
+
+// star 按钮由构建期抓到的数据生成，frontmatter 里不用再写 ★ N
+const links = withStarLink(link);
 
 // 状态元数据（标准 key → 本地化 + 配色）
 const statusMeta = status ? getProjectStatusMeta(status) : null;
@@ -139,7 +143,7 @@ const coverClass = gridCoverFullWidth
 
     <!-- 底部：link 按钮 + 查看详情（右下角，底对齐不随描述高度） -->
     <div class="mt-auto pt-4 flex flex-wrap items-center gap-2">
-        {link.map((r) => {
+        {links.map((r) => {
           const resolvedIcon = resolveLinkIcon(r.icon, r.label);
           return (
             <a

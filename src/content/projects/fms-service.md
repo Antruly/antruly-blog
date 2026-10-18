@@ -11,9 +11,6 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/FMS-Service"
-  - label: "★ 1"
-    icon: "material-symbols:star"
-    value: "https://github.com/Antruly/FMS-Service/stargazers"
 ---
 
 FMS（FileService）是一个**自己部署、数据自己拿着**的文件管理服务。

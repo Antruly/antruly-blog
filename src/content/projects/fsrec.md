@@ -11,9 +11,6 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/fsrec"
-  - label: "★ 2"
-    icon: "material-symbols:star"
-    value: "https://github.com/Antruly/fsrec/stargazers"
 ---
 
 一个不套壳的 Windows 数据恢复工具。

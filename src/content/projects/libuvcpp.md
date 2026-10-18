@@ -13,9 +13,6 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/libuvcpp"
-  - label: "★ 16"
-    icon: "material-symbols:star"
-    value: "https://github.com/Antruly/libuvcpp/stargazers"
 ---
 
 把 libuv 这类 C 风格的异步库直接用在 C++ 里，写起来是比较别扭的：回调签名长、生命周期要靠手动管理、类型信息在 `void*` 里丢失。libuvcpp 要解决的就是这层摩擦——**不改变 libuv 的语义和性能特征**，只是把它封装成符合 C++ 使用习惯的形态。
