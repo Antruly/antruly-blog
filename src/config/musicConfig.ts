@@ -12,7 +12,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	// 使用方式："meting" 按歌单/专辑 ID 整包拉，"local" 读下面写死的歌单
 	//
 	// 这里走 "local" 是绕一下，原因记一下免得以后看着别扭：
-	// 歌单是 7 首指名的曲子，而 meting 模式只能整包拉一个歌单/专辑，主 API 又
+	// 歌单是一批指名的曲子（不是某个现成歌单），而 meting 模式只能整包拉一个歌单/专辑，主 API 又
 	// 对 type=song 传多个 ID 会挂死（实测 45 秒超时）。所以干脆把每首歌的 Meting
 	// 直链写进 local.playlist —— 播放器对 http(s):// 开头的地址是原样使用的
 	// （MusicManager.astro 里的 isFullUrl 判断），效果和外链没区别，本站同样

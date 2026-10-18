@@ -4,11 +4,14 @@
 // 授权，所以不自托管、本站不落地任何音频文件 —— 音频、封面、歌词全部按下面的
 // 单曲 ID 从 Meting 接口现取，最终由音乐平台的 CDN 提供。
 //
-// 「回家的路」和「The Long Way Home」是同一首（HOYO-MiX），所以是 7 首不是 8 首。
+// 「回家的路」和「The Long Way Home」是同一首（HOYO-MiX），只列一条。
 //
 // 加歌：在 metingTracks 里补一条，播放列表和署名页会一起跟着变。
 //   单曲 ID —— 网易云打开那首歌，地址栏 ?id= 后面那串
 //   封面 ID —— 接口返回的 pic 地址里 type=pic&id= 后面那串；找不到就留空
+//
+// 排列顺序就是播放顺序：播放器初始化时从索引 0 起播（MusicManager.astro 的
+// startIndex = 0），所以「置顶」等于把那条放在数组最前面。
 
 export type MetingTrack = {
 	/** 曲名 */
@@ -48,6 +51,13 @@ function endpoint(type: "url" | "pic" | "lrc", id: string): string {
 }
 
 export const metingTracks: MetingTrack[] = [
+	{
+		// 置顶曲目。播放器的默认起始曲目是索引 0，所以放最前面即可。
+		name: "心跳的证明",
+		artist: "原来是歪",
+		neteaseId: "1452682700",
+		picId: "109951167026923224",
+	},
 	{
 		name: "所念皆星河",
 		artist: "CMJ",
@@ -89,6 +99,38 @@ export const metingTracks: MetingTrack[] = [
 		artist: "花玲 / 张安琪 / 沐霏",
 		neteaseId: "2014336709",
 		picId: "109951168232666774",
+	},
+	{
+		name: "风的来信 A Letter From the Wind",
+		artist: "HOYO-MiX / 孙晔",
+		neteaseId: "3442230713",
+		picId: "109951174022206079",
+	},
+	{
+		name: "别让我担心",
+		artist: "多多poi",
+		neteaseId: "2086092043",
+		picId: "109951168946560719",
+	},
+	{
+		name: "下一个远方",
+		artist: "喵☆酱 / 爆裂菊是也 / 花玲 / 彭博 / 钱琛 / 苏逸_Suyi",
+		neteaseId: "2123158258",
+		picId: "109951169305472447",
+	},
+	{
+		name: "门的另一端",
+		artist: "多多poi / 宴宁",
+		neteaseId: "1880127698",
+		picId: "109951166443735716",
+	},
+	{
+		// 网易云上这首歌是 NanNan-- / 恋音 的合作单曲，专辑名就是「樱花草」；
+		// 恋音那张专辑叫「恋音的翻唱集」，里面并没有这首。
+		name: "樱花草",
+		artist: "NanNan-- / 恋音",
+		neteaseId: "1432732732",
+		picId: "109951167985758717",
 	},
 ];
 
