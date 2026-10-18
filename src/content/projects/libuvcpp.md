@@ -13,7 +13,7 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/libuvcpp"
-  - label: "★ 13"
+  - label: "★ 16"
     icon: "material-symbols:star"
     value: "https://github.com/Antruly/libuvcpp/stargazers"
 ---

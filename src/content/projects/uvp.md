@@ -12,6 +12,9 @@ link:
   - label: "GitHub"
     icon: "fa7-brands:github"
     value: "https://github.com/Antruly/uvp"
+  - label: "★ 1"
+    icon: "material-symbols:star"
+    value: "https://github.com/Antruly/uvp/stargazers"
 ---
 
 [libuvcpp](/projects/libuvcpp/) 写起来是舒服的，但**跑起来麻烦**：C++ 项目该有的依赖、构建、进程管理一样不少，改一行要重新编一遍，服务起没起来、接口通不通还得自己盯。
